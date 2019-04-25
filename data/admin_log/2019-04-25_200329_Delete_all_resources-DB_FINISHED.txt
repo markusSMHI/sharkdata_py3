@@ -1,0 +1,9 @@
+
+command: Delete all resources-DB
+started_at: 2019-04-25 200329
+user: apa
+
+
+status: FINISHED
+finished_at: 2019-04-25_200329
+

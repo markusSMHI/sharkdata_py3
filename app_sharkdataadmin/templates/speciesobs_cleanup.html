@@ -1,0 +1,27 @@
+{% extends "sharkdata_form_base.html" %}
+
+{% block title %}SHARKdata - Clean up species observations{% endblock %}
+
+{% block header %}Species observations{% endblock %}
+
+{% block content %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Clean up species observations</h2>
+            </div>
+            <div class="panel-body">
+<!--                <p>Are you sure you want to remove all observations marked as "DELETED"?</p> -->
+                <p>Are you sure you want to delete all species observation?</p>
+                <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="speciesobs_cleanup">
+                	{% csrf_token %}
+                    {{ form.as_p }}
+                    <p class="sharkdata-form-actions">
+                        <button class="btn btn-primary" type="submit">Yes</button>
+                        <a class="btn btn-default" href="/sharkdataadmin">Cancel</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+{% endblock %}

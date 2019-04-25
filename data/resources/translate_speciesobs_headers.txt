@@ -1,0 +1,34 @@
+internal_name	short	english	swedish	darwin_core	comments
+					
+data_type	DTYPE	Data type	Datatyp	DataType	
+scientific_name	TAXON_NAME	Scientific name	Vetenskapligt namn	scientificName	DwC-term
+scientific_authority	AUTHOR	Authority	Auktor	scientificNameAuthorship	DwC-term
+sampling_date	SDATE	Sampling date	Provtagningsdatum	eventDate	DwC-term
+sampling_year	YEAR	Year	År	year	DwC-term
+sampling_month	MONTH	Month	Månad	month	DwC-term
+sampling_day	DAY	Day	Dag	day	DwC-term
+latitude_dd	LATIT_DD	Latitude (decimal degrees)	Latitud (decimalgrader)	decimalLatitude	DwC-term
+longitude_dd	LONGI_DD	Longitude (decimal degrees)	Longitud (decimalgrader)	decimalLongitude	DwC-term
+sample_min_depth	MNDEP	Sample minimum depth	Provets övre djup	minimumDepthInMeters	DwC-term
+sample_max_depth	MXDEP	Sample maximum depth	Provets nedre djup	maximumDepthInMeters	DwC-term
+sampler_type	SMTYP	Sampler type	Provtagartyp	SamplerType	
+dyntaxa_id	DYNTAXAID	Dyntaxa id	Dyntaxa-id	DyntaxaTaxonID	
+taxon_kingdom	KINGDOM	Kingdom	Rike	kingdom	DwC-term
+taxon_phylum	PHYLUM	Phylum	Stam	phylum	DwC-term
+taxon_class	CLASS	Class	Klass	class	DwC-term
+taxon_order	ORDER	Order	Ordning	order	DwC-term
+taxon_family	FAMILY	Family	Familj	family	DwC-term
+taxon_genus	GENUS	Genus	Släkte	genus	DwC-term
+taxon_species	SPECIES	Species	Art	Species	
+					
+orderer	ORDERER	Orderer	Beställare	ownerInstitutionCode	DwC term
+reporting_institute	RLABO	Reporting institute	Rapporterande institute	ReportingInstitutionCode	
+sampling_laboratory	SLABO	Sampling laboratory	Provtagningslaboratorium	recordedBy	DwC-term
+analytical_laboratory	ALABO	Analytical laboratory	Analyslaboratorium	AnalyticalLaboratoryCode	
+dataset_name	DATASET	Dataset	Leveranspaket	DatasetName	
+dataset_file_name	DATAFILE	Dataset file	Leveransfil	DatasetFileName	
+					
+occurrence_id	OCCURRENCE_ID	Occurrence ID	Förekomst-ID	occurrenceID	DwC-term
+status	STATUS	Status	Status	Status	For internal use
+last_update_date	STATUS_UPDATED	Status updated	Statusuppdatering	StatusUpdate	For internal use
+last_status_change_date	STATUS_CHANGED	Status changed	Statusändring	StatusChanged	For internal use

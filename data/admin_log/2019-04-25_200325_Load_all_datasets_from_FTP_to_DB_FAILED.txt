@@ -1,0 +1,12 @@
+
+command: Load all datasets from FTP to DB
+started_at: 2019-04-25 200325
+user: apa
+
+Loading file: SHARK_Zooplankton_2012_SMHI_version_2019-01-29.zip...
+Loading file: SHARK_Zooplankton_2012_SUSE_version_2019-01-29.zip...
+Loading file: SHARK_Zooplankton_2012_UMSC_version_2019-01-29.zip...
+
+status: FAILED
+finished_at: 2019-04-25_200325
+

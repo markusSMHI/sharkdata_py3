@@ -1,0 +1,585 @@
+internal_key	keep_value	remove_value
+dataset_name	SHARK_Bacterioplankton_ABU_2006_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2007_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2008_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2009_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2010_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2011_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2012_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2013_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2014_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2015_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_ABU_2016_UMSC_Bactabund	
+dataset_name	SHARK_Bacterioplankton_GR_2006_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2007_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2008_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2009_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2010_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2011_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2012_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2013_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2014_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2015_UMSC	
+dataset_name	SHARK_Bacterioplankton_GR_2016_UMSC	
+dataset_name	SHARK_Bacterioplankton_PL_1989_2005_UMSC	
+dataset_name	SHARK_Chlorophyll_1982_2005_SMHI_SUSE	
+dataset_name	SHARK_Chlorophyll_1985_1989_SMHI	
+dataset_name	SHARK_Chlorophyll_1989_2005_UMSC	
+dataset_name	SHARK_Chlorophyll_1990_1999_SMHI	
+dataset_name	SHARK_Chlorophyll_2000_2010_SMHI	
+dataset_name	SHARK_Chlorophyll_2006_SUSE	
+dataset_name	SHARK_Chlorophyll_2006_UMSC	
+dataset_name	SHARK_Chlorophyll_2007_SUSE	
+dataset_name	SHARK_Chlorophyll_2007_UMSC	
+dataset_name	SHARK_Chlorophyll_2008_SUSE	
+dataset_name	SHARK_Chlorophyll_2008_UMSC	
+dataset_name	SHARK_Chlorophyll_2009_SUSE	
+dataset_name	SHARK_Chlorophyll_2009_UMSC	
+dataset_name	SHARK_Chlorophyll_2010_SUSE	
+dataset_name	SHARK_Chlorophyll_2010_UMSC	
+dataset_name	SHARK_Chlorophyll_2011_SMHI	
+dataset_name	SHARK_Chlorophyll_2011_SUSE	
+dataset_name	SHARK_Chlorophyll_2011_UMSC	
+dataset_name	SHARK_Chlorophyll_2012_SMHI	
+dataset_name	SHARK_Chlorophyll_2012_UMSC	
+dataset_name	SHARK_Chlorophyll_2013_DEEP	
+dataset_name	SHARK_Chlorophyll_2013_SMHI	
+dataset_name	SHARK_Chlorophyll_2013_UMSC	
+dataset_name	SHARK_Chlorophyll_2014_DEEP	
+dataset_name	SHARK_Chlorophyll_2014_SMHI	
+dataset_name	SHARK_Chlorophyll_2014_UMSC	
+dataset_name	SHARK_Chlorophyll_2015_DEEP	
+dataset_name	SHARK_Chlorophyll_2015_SMHI	
+dataset_name	SHARK_Chlorophyll_2015_UMSC	
+dataset_name	SHARK_Chlorophyll_2016_DEEP	
+dataset_name	SHARK_Chlorophyll_2016_SMHI	
+dataset_name	SHARK_Chlorophyll_2016_UMSC	
+dataset_name	SHARK_Chlorophyll_2017_DEEP	
+dataset_name	SHARK_Chlorophyll_2017_SMHI	
+dataset_name	SHARK_Chlorophyll_2017_UMSC	
+dataset_name	SHARK_Epibenthos_1993_TMBL	
+dataset_name	SHARK_Epibenthos_1994_TMBL	
+dataset_name	SHARK_Epibenthos_1995_TMBL	
+dataset_name	SHARK_Epibenthos_1996_TMBL	
+dataset_name	SHARK_Epibenthos_1997_TMBL	
+dataset_name	SHARK_Epibenthos_1998_TMBL	
+dataset_name	SHARK_Epibenthos_1999_TMBL	
+dataset_name	SHARK_Epibenthos_2000_2005_TMBL	
+dataset_name	SHARK_Epibenthos_2000_2015_DEEP_Gotland	
+dataset_name	SHARK_Epibenthos_2006_TMBL	
+dataset_name	SHARK_Epibenthos_2007_LNU	
+dataset_name	SHARK_Epibenthos_2007_TMBL_Kattegatt	
+dataset_name	SHARK_Epibenthos_2007_UGMET	
+dataset_name	SHARK_Epibenthos_2008_2015_DEEP_Vasternorrland	
+dataset_name	SHARK_Epibenthos_2008_LNU	
+dataset_name	SHARK_Epibenthos_2008_UGMET	
+dataset_name	SHARK_Epibenthos_2008_UGMET_Kattegatt	
+dataset_name	SHARK_Epibenthos_2008_UGMET_Skagerrak	
+dataset_name	SHARK_Epibenthos_2009_LNU	
+dataset_name	SHARK_Epibenthos_2009_UGMET_Kattegatt	
+dataset_name	SHARK_Epibenthos_2009_UGMET_Skagerrak	
+dataset_name	SHARK_Epibenthos_2010_LNU	
+dataset_name	SHARK_Epibenthos_2010_UGMET_Kattegatt	
+dataset_name	SHARK_Epibenthos_2010_UGMET_Skagerrak	
+dataset_name	SHARK_Epibenthos_2011_LNU	
+dataset_name	SHARK_Epibenthos_2011_UGMET_Kattegatt	
+dataset_name	SHARK_Epibenthos_2011_UGMET_Skagerrak	
+dataset_name	SHARK_Epibenthos_2012_LNU	
+dataset_name	SHARK_Epibenthos_2012_UGBEST_Kattegatt	
+dataset_name	SHARK_Epibenthos_2012_UGBEST_Skagerack	
+dataset_name	SHARK_Epibenthos_2013_LNU	
+dataset_name	SHARK_Epibenthos_2013_SLC-T_Kattegatt	
+dataset_name	SHARK_Epibenthos_2013_SLC-T_Skagerack	
+dataset_name	SHARK_Epibenthos_2014_LNU	
+dataset_name	SHARK_Epibenthos_2014_SLC-T_Kattegatt	
+dataset_name	SHARK_Epibenthos_2015_DEEP_Asko	
+dataset_name	SHARK_Epibenthos_2015_LNU	
+dataset_name	SHARK_Epibenthos_2015_SLC-T_Kattegatt	
+dataset_name	SHARK_Epibenthos_2016_DEEP_Asko	
+dataset_name	SHARK_Epibenthos_2016_DEEP_Gotland	
+dataset_name	SHARK_Epibenthos_2016_DEEP_Hogakusten	
+dataset_name	SHARK_Epibenthos_2016_LNU	
+dataset_name	SHARK_Epibenthos_2016_SLC-T_Kattegatt	
+dataset_name	SHARK_Epibenthos_2017_DEEP_Asko	
+dataset_name	SHARK_Epibenthos_2017_DEEP_Gotland	
+dataset_name	SHARK_Epibenthos_2017_DEEP_Hogakusten	
+dataset_name	SHARK_Epibenthos_2017_DEEP_Singo	
+dataset_name	SHARK_Epibenthos_2017_LNU	
+dataset_name	SHARK_Phytoplankton_1983_SUSE	
+dataset_name	SHARK_Phytoplankton_1984_SUSE	
+dataset_name	SHARK_Phytoplankton_1985_SUSE	
+dataset_name	SHARK_Phytoplankton_1986_SUSE	
+dataset_name	SHARK_Phytoplankton_1987_SUSE	
+dataset_name	SHARK_Phytoplankton_1988_SUSE	
+dataset_name	SHARK_Phytoplankton_1989_SUSE	
+dataset_name	SHARK_Phytoplankton_1990_SUSE	
+dataset_name	SHARK_Phytoplankton_1991_SUSE	
+dataset_name	SHARK_Phytoplankton_1992_SUSE	
+dataset_name	SHARK_Phytoplankton_1993_SUSE	
+dataset_name	SHARK_Phytoplankton_1994_1996_SMHI_Anholt	
+dataset_name	SHARK_Phytoplankton_1994_SUSE	
+dataset_name	SHARK_Phytoplankton_1995_2001_UMSC	
+dataset_name	SHARK_Phytoplankton_1995_SUSE	
+dataset_name	SHARK_Phytoplankton_1996_SUSE	
+dataset_name	SHARK_Phytoplankton_1997_SMHI_Anholt	
+dataset_name	SHARK_Phytoplankton_1997_SUSE	
+dataset_name	SHARK_Phytoplankton_1998_SUSE	
+dataset_name	SHARK_Phytoplankton_1999_SUSE	
+dataset_name	SHARK_Phytoplankton_2000_SMHI_Anholt	
+dataset_name	SHARK_Phytoplankton_2000_SUSE	
+dataset_name	SHARK_Phytoplankton_2001_SMHI_A17	
+dataset_name	SHARK_Phytoplankton_2001_SMHI_Anholt	
+dataset_name	SHARK_Phytoplankton_2001_SUSE	
+dataset_name	SHARK_Phytoplankton_2002_SMHI	
+dataset_name	SHARK_Phytoplankton_2002_SUSE	
+dataset_name	SHARK_Phytoplankton_2002_UMSC	
+dataset_name	SHARK_Phytoplankton_2003_SMHI	
+dataset_name	SHARK_Phytoplankton_2003_SMHI_A17	
+dataset_name	SHARK_Phytoplankton_2003_SMHI_Slaggo	
+dataset_name	SHARK_Phytoplankton_2003_SUSE	
+dataset_name	SHARK_Phytoplankton_2003_UMSC	
+dataset_name	SHARK_Phytoplankton_2004_SMHI	
+dataset_name	SHARK_Phytoplankton_2004_SUSE	
+dataset_name	SHARK_Phytoplankton_2004_UMSC	
+dataset_name	SHARK_Phytoplankton_2005_SMHI	
+dataset_name	SHARK_Phytoplankton_2005_SUSE	
+dataset_name	SHARK_Phytoplankton_2005_UMSC	
+dataset_name	SHARK_Phytoplankton_2006_SMHI	
+dataset_name	SHARK_Phytoplankton_2006_SUSE	
+dataset_name	SHARK_Phytoplankton_2006_UMSC	
+dataset_name	SHARK_Phytoplankton_2007_SMHI	
+dataset_name	SHARK_Phytoplankton_2007_SUSE	
+dataset_name	SHARK_Phytoplankton_2007_UMSC	
+dataset_name	SHARK_Phytoplankton_2008_SMHI	
+dataset_name	SHARK_Phytoplankton_2008_SUSE	
+dataset_name	SHARK_Phytoplankton_2008_UMSC	
+dataset_name	SHARK_Phytoplankton_2009_SMHI	
+dataset_name	SHARK_Phytoplankton_2009_SUSE	
+dataset_name	SHARK_Phytoplankton_2009_UMSC	
+dataset_name	SHARK_Phytoplankton_2010_SMHI	
+dataset_name	SHARK_Phytoplankton_2010_SUSE	
+dataset_name	SHARK_Phytoplankton_2010_UMSC	
+dataset_name	SHARK_Phytoplankton_2011_SMHI	
+dataset_name	SHARK_Phytoplankton_2011_SUSE	
+dataset_name	SHARK_Phytoplankton_2011_UMSC	
+dataset_name	SHARK_Phytoplankton_2012_SMHI	
+dataset_name	SHARK_Phytoplankton_2012_SUSE	
+dataset_name	SHARK_Phytoplankton_2012_UMSC	
+dataset_name	SHARK_Phytoplankton_2013_DEEP	
+dataset_name	SHARK_Phytoplankton_2013_SMHI	
+dataset_name	SHARK_Phytoplankton_2013_UMSC	
+dataset_name	SHARK_Phytoplankton_2014_DEEP	
+dataset_name	SHARK_Phytoplankton_2014_SMHI	
+dataset_name	SHARK_Phytoplankton_2014_UMSC	
+dataset_name	SHARK_Phytoplankton_2015_DEEP	
+dataset_name	SHARK_Phytoplankton_2015_SMHI	
+dataset_name	SHARK_Phytoplankton_2015_UMSC	
+dataset_name	SHARK_Phytoplankton_2016_DEEP	
+dataset_name	SHARK_Phytoplankton_2016_SMHI	
+dataset_name	SHARK_Phytoplankton_2016_UMSC	
+dataset_name	SHARK_Phytoplankton_2017_DEEP	
+dataset_name	SHARK_Phytoplankton_2017_UMSC	
+dataset_name	SHARK_Phytoplankton_2017_SMHI	
+dataset_name	SHARK_PrimaryProduction_1979_2005_SMHI	
+dataset_name	SHARK_PrimaryProduction_1985_1989_SLC_K	
+dataset_name	SHARK_PrimaryProduction_1989_2000_UMSC	
+dataset_name	SHARK_PrimaryProduction_1990_1999_SLC_K	
+dataset_name	SHARK_PrimaryProduction_1994_2005_SUSE	
+dataset_name	SHARK_PrimaryProduction_2000_2009_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2006_SMHI	
+dataset_name	SHARK_PrimaryProduction_2006_SUSE	
+dataset_name	SHARK_PrimaryProduction_2007_SMHI	
+dataset_name	SHARK_PrimaryProduction_2007_SUSE	
+dataset_name	SHARK_PrimaryProduction_2008_SMHI	
+dataset_name	SHARK_PrimaryProduction_2008_SUSE	
+dataset_name	SHARK_PrimaryProduction_2009_SMHI	
+dataset_name	SHARK_PrimaryProduction_2009_SUSE	
+dataset_name	SHARK_PrimaryProduction_2010_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2010_SMHI	
+dataset_name	SHARK_PrimaryProduction_2010_SUSE	
+dataset_name	SHARK_PrimaryProduction_2011_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2011_SMHI	
+dataset_name	SHARK_PrimaryProduction_2011_SUSE	
+dataset_name	SHARK_PrimaryProduction_2012_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2012_SMHI	
+dataset_name	SHARK_PrimaryProduction_2012_SUSE	
+dataset_name	SHARK_PrimaryProduction_2013_DEEP	
+dataset_name	SHARK_PrimaryProduction_2013_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2013_SMHI	
+dataset_name	SHARK_PrimaryProduction_2014_DEEP	
+dataset_name	SHARK_PrimaryProduction_2014_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2015_DEEP	
+dataset_name	SHARK_PrimaryProduction_2015_SLC_K	
+dataset_name	SHARK_PrimaryProduction_2016_SLC_K	
+dataset_name	SHARK_SealPathology_2008_2016_MNHS	
+dataset_name	SHARK_SealPathology_2008_2017_MNHS	
+dataset_name	SHARK_Sedimentation_1982_2005_SUSE	
+dataset_name	SHARK_Sedimentation_1991_2008_UMSC	
+dataset_name	SHARK_Sedimentation_2006_SUSE	
+dataset_name	SHARK_Sedimentation_2007_SUSE	
+dataset_name	SHARK_Sedimentation_2008_SUSE	
+dataset_name	SHARK_Sedimentation_2009_SUSE	
+dataset_name	SHARK_Sedimentation_2009_UMSC	
+dataset_name	SHARK_Sedimentation_2010_SUSE	
+dataset_name	SHARK_Sedimentation_2010_UMSC	
+dataset_name	SHARK_Sedimentation_2011_SUSE	
+dataset_name	SHARK_Sedimentation_2011_UMSC	
+dataset_name	SHARK_Sedimentation_2012_SUSE	
+dataset_name	SHARK_Sedimentation_2012_UMSC	
+dataset_name	SHARK_Sedimentation_2013_DEEP	
+dataset_name	SHARK_Sedimentation_2013_UMSC	
+dataset_name	SHARK_Sedimentation_2014_DEEP	
+dataset_name	SHARK_Sedimentation_2014_UMSC	
+dataset_name	SHARK_Sedimentation_2015_DEEP	
+dataset_name	SHARK_Sedimentation_2015_UMSC	
+dataset_name	SHARK_Sedimentation_2016_DEEP	
+dataset_name	SHARK_Zoobenthos_1971_SUSE	
+dataset_name	SHARK_Zoobenthos_1972_1993_SLU	
+dataset_name	SHARK_Zoobenthos_1972_SUSE	
+dataset_name	SHARK_Zoobenthos_1973_SUSE	
+dataset_name	SHARK_Zoobenthos_1974_SUSE	
+dataset_name	SHARK_Zoobenthos_1975_SUSE	
+dataset_name	SHARK_Zoobenthos_1976_SUSE	
+dataset_name	SHARK_Zoobenthos_1977_2008_KMRS_Alsback	
+dataset_name	SHARK_Zoobenthos_1977_SUSE	
+dataset_name	SHARK_Zoobenthos_1978_SUSE	
+dataset_name	SHARK_Zoobenthos_1979_SUSE	
+dataset_name	SHARK_Zoobenthos_1980_1989_SUSE	
+dataset_name	SHARK_Zoobenthos_1983_KMRS	
+dataset_name	SHARK_Zoobenthos_1983_UMSC	
+dataset_name	SHARK_Zoobenthos_1984_KMRS	
+dataset_name	SHARK_Zoobenthos_1984_UMSC	
+dataset_name	SHARK_Zoobenthos_1985_KMRS	
+dataset_name	SHARK_Zoobenthos_1985_UMSC	
+dataset_name	SHARK_Zoobenthos_1986_KMRS	
+dataset_name	SHARK_Zoobenthos_1986_UMSC	
+dataset_name	SHARK_Zoobenthos_1987_KMRS	
+dataset_name	SHARK_Zoobenthos_1987_UMSC	
+dataset_name	SHARK_Zoobenthos_1988_KMRS	
+dataset_name	SHARK_Zoobenthos_1988_UMSC	
+dataset_name	SHARK_Zoobenthos_1989_KMRS	
+dataset_name	SHARK_Zoobenthos_1989_LNU_BMP	
+dataset_name	SHARK_Zoobenthos_1989_UMSC	
+dataset_name	SHARK_Zoobenthos_1990_1999_SUSE	
+dataset_name	SHARK_Zoobenthos_1990_1999_UMSC	
+dataset_name	SHARK_Zoobenthos_1990_KMRS	
+dataset_name	SHARK_Zoobenthos_1991_KMRS	
+dataset_name	SHARK_Zoobenthos_1992_KMRS	
+dataset_name	SHARK_Zoobenthos_1993_KMRS	
+dataset_name	SHARK_Zoobenthos_1994_KMRS	
+dataset_name	SHARK_Zoobenthos_1995_KMRS	
+dataset_name	SHARK_Zoobenthos_1996_KMRS	
+dataset_name	SHARK_Zoobenthos_1997_KMRS	
+dataset_name	SHARK_Zoobenthos_1998_KMRS	
+dataset_name	SHARK_Zoobenthos_2000_KMRS	
+dataset_name	SHARK_Zoobenthos_2000_SUSE	
+dataset_name	SHARK_Zoobenthos_2000_UMSC	
+dataset_name	SHARK_Zoobenthos_2001_KMRS	
+dataset_name	SHARK_Zoobenthos_2001_SUSE	
+dataset_name	SHARK_Zoobenthos_2001_UMSC	
+dataset_name	SHARK_Zoobenthos_2002_KMRS	
+dataset_name	SHARK_Zoobenthos_2002_SUSE	
+dataset_name	SHARK_Zoobenthos_2002_UMSC	
+dataset_name	SHARK_Zoobenthos_2003_KMRS	
+dataset_name	SHARK_Zoobenthos_2003_SUSE	
+dataset_name	SHARK_Zoobenthos_2003_UMSC	
+dataset_name	SHARK_Zoobenthos_2004_KMRS	
+dataset_name	SHARK_Zoobenthos_2004_SUSE	
+dataset_name	SHARK_Zoobenthos_2004_UMSC	
+dataset_name	SHARK_Zoobenthos_2005_KMRS	
+dataset_name	SHARK_Zoobenthos_2005_SUSE	
+dataset_name	SHARK_Zoobenthos_2005_UMSC	
+dataset_name	SHARK_Zoobenthos_2006_KMRS	
+dataset_name	SHARK_Zoobenthos_2006_SUSE	
+dataset_name	SHARK_Zoobenthos_2006_UMSC	
+dataset_name	SHARK_Zoobenthos_2007_2008_LNU_Misterhult	
+dataset_name	SHARK_Zoobenthos_2007_2008_LNU_Torhamn	
+dataset_name	SHARK_Zoobenthos_2007_2010_SUSE_Nat	
+dataset_name	SHARK_Zoobenthos_2007_2016_DEEP_Asko	
+dataset_name	SHARK_Zoobenthos_2007_KMRS	
+dataset_name	SHARK_Zoobenthos_2007_UMSC	
+dataset_name	SHARK_Zoobenthos_2008_KMRS	
+dataset_name	SHARK_Zoobenthos_2008_UMSC	
+dataset_name	SHARK_Zoobenthos_2009_KMRS	
+dataset_name	SHARK_Zoobenthos_2009_UMSC_Nationella	
+dataset_name	SHARK_Zoobenthos_2010_KMRS	
+dataset_name	SHARK_Zoobenthos_2010_UMSC	
+dataset_name	SHARK_Zoobenthos_2011_KMRS	
+dataset_name	SHARK_Zoobenthos_2011_SUSE	
+dataset_name	SHARK_Zoobenthos_2011_UMSC	
+dataset_name	SHARK_Zoobenthos_2012_SUSE	
+dataset_name	SHARK_Zoobenthos_2012_UMSC	
+dataset_name	SHARK_Zoobenthos_2013_DEEP	
+dataset_name	SHARK_Zoobenthos_2013_SLC-K	
+dataset_name	SHARK_Zoobenthos_2013_UMSC	
+dataset_name	SHARK_Zoobenthos_2014_DEEP	
+dataset_name	SHARK_Zoobenthos_2014_SLC-T	
+dataset_name	SHARK_Zoobenthos_2014_UMSC	
+dataset_name	SHARK_Zoobenthos_2015_DEEP	
+dataset_name	SHARK_Zoobenthos_2015_SLC-T	
+dataset_name	SHARK_Zoobenthos_2015_UMSC	
+dataset_name	SHARK_Zoobenthos_2016_DEEP	
+dataset_name	SHARK_Zoobenthos_2016_LNU	
+dataset_name	SHARK_Zoobenthos_2016_UMSC	
+dataset_name	SHARK_Zoobenthos_2016_SLC-T	
+dataset_name	SHARK_Zoobenthos_2017_DEEP	
+dataset_name	SHARK_Zoobenthos_2017_DEEP_Asko	
+dataset_name	SHARK_Zoobenthos_2017_LNU	
+dataset_name	SHARK_Zoobenthos_2017_UMSC	
+dataset_name	SHARK_Zoobenthos_2017_SLC-T	
+dataset_name	SHARK_Zooplankton_1979_SUSE	
+dataset_name	SHARK_Zooplankton_1980_1989_SUSE	
+dataset_name	SHARK_Zooplankton_1990_SUSE	
+dataset_name	SHARK_Zooplankton_1991_SUSE	
+dataset_name	SHARK_Zooplankton_1992_SUSE	
+dataset_name	SHARK_Zooplankton_1993_SUSE	
+dataset_name	SHARK_Zooplankton_1994_2010_UMSC	
+dataset_name	SHARK_Zooplankton_1994_SUSE	
+dataset_name	SHARK_Zooplankton_1995_2000_SUSE_tubesampler	
+dataset_name	SHARK_Zooplankton_1995_SUSE	
+dataset_name	SHARK_Zooplankton_1996_SMHI	
+dataset_name	SHARK_Zooplankton_1998_SMHI	
+dataset_name	SHARK_Zooplankton_1998_SUSE	
+dataset_name	SHARK_Zooplankton_1999_2007_SMHI_Anholt	
+dataset_name	SHARK_Zooplankton_2000_2002_SUSE	
+dataset_name	SHARK_Zooplankton_2003_SUSE	
+dataset_name	SHARK_Zooplankton_2007_SMHI_ej_Anholt	
+dataset_name	SHARK_Zooplankton_2007_SUSE	
+dataset_name	SHARK_Zooplankton_2008_SMHI	
+dataset_name	SHARK_Zooplankton_2008_SUSE	
+dataset_name	SHARK_Zooplankton_2009_SMHI	
+dataset_name	SHARK_Zooplankton_2009_SUSE	
+dataset_name	SHARK_Zooplankton_2010_SMHI	
+dataset_name	SHARK_Zooplankton_2010_SUSE	
+dataset_name	SHARK_Zooplankton_2011_SMHI	
+dataset_name	SHARK_Zooplankton_2011_SUSE	
+dataset_name	SHARK_Zooplankton_2011_UMSC	
+dataset_name	SHARK_Zooplankton_2012_SMHI	
+dataset_name	SHARK_Zooplankton_2012_SUSE	
+dataset_name	SHARK_Zooplankton_2012_UMSC	
+dataset_name	SHARK_Zooplankton_2013_DEEP	
+dataset_name	SHARK_Zooplankton_2013_SMHI	
+dataset_name	SHARK_Zooplankton_2013_UMSC	
+dataset_name	SHARK_Zooplankton_2014_DEEP	
+dataset_name	SHARK_Zooplankton_2014_SMHI	
+dataset_name	SHARK_Zooplankton_2014_UMSC	
+dataset_name	SHARK_Zooplankton_2015_DEEP	
+dataset_name	SHARK_Zooplankton_2015_SMHI	
+dataset_name	SHARK_Zooplankton_2015_UMSC	
+dataset_name	SHARK_Zooplankton_2016_DEEP	
+dataset_name	SHARK_Zooplankton_2016_SMHI	
+dataset_name	SHARK_Zooplankton_2016_UMSC	
+dataset_name	SHARK_Zooplankton_2017_DEEP	
+dataset_name	SHARK_Zooplankton_2017_SMHI	
+dataset_name	SHARK_Zooplankton_2017_UMSC	
+		
+sample_project_name_en		Regional monitoring, County Administration Board of Västernorrland
+sample_project_name_sv		REG Västernorrlands län
+scientific_name		Tintinnopsis
+scientific_name		Ciliophora
+scientific_name		Cyanobacteria
+scientific_name		Ceratium arietinum
+scientific_name		Nitzschia
+scientific_name		Prorocentrum aporum
+scientific_name		Prorocentrum triestinum
+scientific_name		Bacillariophyta
+scientific_name		Unicell
+scientific_name		Diplopsalopsis bomba
+scientific_name		Diplopsalopsis orbicularis
+scientific_name		Diplopelta bomba
+scientific_name		Prymnesiophyceae
+scientific_name		Eukaryotic picoplankton
+scientific_name		Eutintinnus
+scientific_name		Stenosemella
+scientific_name		Helicostomella subulata
+scientific_name		Leprotintinnus pellucidus
+scientific_name		Salpingella acuminata
+scientific_name		Favella
+scientific_name		Tiarina fusus
+scientific_name		Didinium nasutum
+scientific_name		Vanella
+scientific_name		Chlorophyceae
+scientific_name		Bicosta minor
+scientific_name		Bicosta spinifera
+scientific_name		Strombidium sulcatum
+scientific_name		Uronema
+scientific_name		Ceratium bucephalum
+scientific_name		Daturella 
+scientific_name		Didinium
+scientific_name		Lioloma elongatum
+scientific_name		Tintinnidium
+scientific_name		Tintinnidae
+scientific_name		Hyalodiscus
+scientific_name		Trigonium alternans
+scientific_name		Tintinnopsis nana
+scientific_name		Tintinnidium mucicola
+scientific_name		Leegardiella ovalis
+scientific_name		Entomoneis
+scientific_name		Strombidium
+scientific_name		Unicells_and_flagellates
+scientific_name		Bacillariophyceae
+scientific_name		Coscinodiscophyceae
+scientific_name		Strobilidium
+scientific_name		Balanion comatum
+scientific_name		Eutintinnus elongatus
+scientific_name		Pterosperma cristatum
+scientific_name		Fragilariopsis oceanica
+scientific_name		Tintinnopsis beroidea
+scientific_name		Tintinnopsis campanula
+scientific_name		Dictyocha speculum
+scientific_name		Strobilidium spiralis
+scientific_name		Lohmanniella oviformis
+scientific_name		Helicostomella fusiformis
+scientific_name		Trieres regia
+scientific_name		Tiarina
+scientific_name		Thalassionema nitzschioides
+scientific_name		Dactyliosolen blavyanus
+scientific_name		Pseudosolenia calcar-avis
+scientific_name		Rhizomonas setigera
+scientific_name		Solenicola setigera
+scientific_name		Goniochloris
+scientific_name		BARE ROCK
+station_name		R 1-107
+station_name		R 1-116
+station_name		R 1-13
+station_name		R 1-17
+station_name		R 1-18
+station_name		R 1-6
+station_name		R 2-1
+station_name		R 2-10
+station_name		R 2-11
+station_name		R 2-12
+station_name		R 2-14
+station_name		R 2-15
+station_name		R 2-16
+station_name		R 2-17
+station_name		R 2-18
+station_name		R 2-19
+station_name		R 2-2
+station_name		R 2-20
+station_name		R 2-3
+station_name		R 2-4
+station_name		R 2-5
+station_name		R 2-6
+station_name		R 2-7
+station_name		R 2-8
+station_name		R 2-9
+station_name		R 6-1
+station_name		R 6-10
+station_name		R 6-11
+station_name		R 6-12
+station_name		R 6-13
+station_name		R 6-14
+station_name		R 6-15
+station_name		R 6-16
+station_name		R 6-17
+station_name		R 6-18
+station_name		R 6-19
+station_name		R 6-2
+station_name		R 6-20
+station_name		R 6-3
+station_name		R 6-4
+station_name		R 6-5
+station_name		R 6-6
+station_name		R 6-7
+station_name		R 6-8
+station_name		R 6-9
+station_name		R 7-1
+station_name		R 7-10
+station_name		R 7-11
+station_name		R 7-12
+station_name		R 7-13
+station_name		R 7-14
+station_name		R 7-15
+station_name		R 7-16
+station_name		R 7-17
+station_name		R 7-18
+station_name		R 7-19
+station_name		R 7-2
+station_name		R 7-20
+station_name		R 7-3
+station_name		R 7-4
+station_name		R 7-5
+station_name		R 7-7
+station_name		R 7-8
+station_name		R 7-9
+station_name		R 8-1
+station_name		R 8-12
+station_name		R 8-13
+station_name		R 8-14
+station_name		R 8-15
+station_name		R 8-16
+station_name		R 8-17
+station_name		R 8-18
+station_name		R 8-19
+station_name		R 8-2
+station_name		R 8-20
+station_name		R 8-3
+station_name		R 9-1
+station_name		R 9-10
+station_name		R 9-12
+station_name		R 9-13
+station_name		R 9-14
+station_name		R 9-15
+station_name		R 9-17
+station_name		R 9-18
+station_name		R 9-2
+station_name		R 9-3
+station_name		R 9-4
+station_name		R 9-5
+station_name		R 9-6
+station_name		R 9-7
+station_name		R 9-8
+station_name		R 9-9
+station_name		G 14
+station_name		G 15
+station_name		G 4
+station_name		G 6
+station_name		G 7
+station_name		G 8
+station_name		G14
+station_name		G15
+station_name		G4
+station_name		G6
+station_name		G7
+station_name		G8
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN G 12
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN G 13
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN G 2
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN G 3
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN G 5
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN G 9
+station_name		GAVIKSFJÄRDEN-EDSÄTTERFJÄRDEN R 4-1
+station_name		GR 1
+station_name		GR 101
+station_name		GR 102
+station_name		GR 103
+station_name		GR 104
+station_name		GR 105
+station_name		GR 2
+station_name		GR 3
+station_name		GR 4
+station_name		GR 5
+station_name		Gr1
+station_name		Gr2
+station_name		Gr3
+station_name		GR4
+station_name		GR5
+station_name		VBor1
+station_name		VBor2
+station_name		VBOR3
+station_name		Stigfj
+station_name		SALTF
+station_name		SALTFJ
+station_name		OLD 112
+station_name		HAVSTENS FJORD, N BRATTÖN
+station_name		HAVSTENS FJORD, V LYCKORNA
+station_name		E 4A
+station_name		E 3
+station_name		E 2
+station_name		BV2
+station_name		BV 2
+station_name		BV 42
+station_name		A13
+sample_orderer_name_sv		Bohuskusten Coalition of Water Conservation
+sample_orderer_name_sv		County Administrative Board of Västra Götaland
