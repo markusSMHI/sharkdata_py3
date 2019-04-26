@@ -1,0 +1,12 @@
+
+bokeh 
+django 
+folium 
+lxml 
+numpy 
+pandas 
+pillow 
+python-dateutil 
+requests 
+setuptools 
+tornado 

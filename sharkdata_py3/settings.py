@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['localhost', '<REPLACE>']
 
 
 # Application specific constants.
-parent_dir = pathlib.Path(BASE_DIR).parent
+parent_dir = pathlib.Path(BASE_DIR).parent.parent
 LOGGER = logging.getLogger('SHARKdata')
 LOGGING_PATH = pathlib.Path(parent_dir, 'sharkdata_log')
 SHARKDATA_DATA_IN = pathlib.Path(parent_dir, 'data_in')
