@@ -97,10 +97,9 @@ WSGI_APPLICATION = 'sharkdata_py3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(pathlib.Path(SHARKDATA_DB, 'db.sqlite3')),
+        'NAME': str(pathlib.Path('/db/db.sqlite3')),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
