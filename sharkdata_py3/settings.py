@@ -27,13 +27,15 @@ SECRET_KEY = '+ze+9-g*(20_*yr%+0-y(aie6u(#4y0^6g@#=962spje4lder9'
 # DEBUG = False # <REPLACE>
 DEBUG = True # <REPLACE>
 
-ALLOWED_HOSTS = ['localhost', '<REPLACE>']
+ALLOWED_HOSTS = ['localhost', 'django.mellifica.org']
 
 
 # Application specific constants.
 parent_dir = pathlib.Path(BASE_DIR).parent.parent
 LOGGER = logging.getLogger('SHARKdata')
-LOGGING_PATH = pathlib.Path(parent_dir, 'sharkdata_log')
+SHARKDATA_DB = pathlib.Path(parent_dir, 'db')
+SHARKDATA_LOG = pathlib.Path(parent_dir, 'log')
+SHARKDATA_STATIC = pathlib.Path(parent_dir, 'static')
 SHARKDATA_DATA_IN = pathlib.Path(parent_dir, 'data_in')
 SHARKDATA_DATA = pathlib.Path(parent_dir, 'data')
 APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST = {'apa': 'bepa'}
@@ -95,7 +97,7 @@ WSGI_APPLICATION = 'sharkdata_py3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(pathlib.Path(SHARKDATA_DATA, 'db', 'db.sqlite3')),
+        'NAME': str(pathlib.Path(SHARKDATA_DB, 'db.sqlite3')),
     }
 }
 
@@ -138,7 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 # Static files will be collected and put here by running the 
 # command: python manage.py collectstatic
-STATIC_ROOT = str(pathlib.Path(SHARKDATA_DATA, 'static'))
+STATIC_ROOT = str(SHARKDATA_STATIC)
 STATICFILES_DIRS = (
     str(pathlib.Path(BASE_DIR, 'app_sharkdata_base', 'static')), 
 )
@@ -147,7 +149,7 @@ STATIC_URL = '/static/'
 
 
 # Logging.
-if LOGGING_PATH:
+if SHARKDATA_LOG:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
@@ -155,7 +157,7 @@ if LOGGING_PATH:
             'file_error': {
                 'level': 'ERROR',
                 'class': 'logging.handlers.RotatingFileHandler',
-                'filename': str(LOGGING_PATH) +'sharkdata_errors.log',
+                'filename': str(SHARKDATA_LOG) +'sharkdata_errors.log',
                 'maxBytes': 1024*1024,
                 'backupCount': 10,
             },
