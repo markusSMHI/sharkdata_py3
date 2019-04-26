@@ -12,7 +12,7 @@ import app_speciesobs.models as speciesobs_models
 import app_datasets.models as datasets_models
 # import app_resources.models as resources_models
 import sharkdata_core.resources_utils as resources_utils
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 #
 import sharkdata_core
 

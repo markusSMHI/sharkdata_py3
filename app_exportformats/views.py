@@ -15,7 +15,7 @@ from django.conf import settings
 from django.core import paginator
 from app_exportformats import models
 from app_exportformats import forms
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 
 import sharkdata_core
 
@@ -279,32 +279,18 @@ def deleteExportFile(request, export_name):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Delete exportfile (DB)', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete-exportfile-DB', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete export', user=user)
                 try:
                     exportfile = models.ExportFiles.objects.get(export_name = export_name)
                     exportfile.delete()
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                        
-                        
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, 
+                                                                   log_row='Export deleted: ' + export_name)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                        
-                        
                 except:
-                    error_message = u"Can't delete exportfile from the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
+                    error_message = u"Can't delete exportfile: " + export_name 
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                    
-            # OK.
+            
             if error_message == None:
                 return HttpResponseRedirect("/exportformats")
         #

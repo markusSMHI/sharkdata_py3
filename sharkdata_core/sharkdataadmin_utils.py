@@ -10,7 +10,7 @@ import datetime
 import threading
 from django.conf import settings
 # import app_datasets.models as datasets_models
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 import sharkdata_core
 
 @sharkdata_core.singleton
@@ -159,70 +159,47 @@ class SharkdataAdminUtils(object):
     
     def generateIcesXmlExportFilesInThread(self, datatype_list, year_from, year_to, monitoring_type, user):
         """ """
-        logrow_id = admin_models.createLogRow(command = 'Generate ICES-XML files.', status = 'RUNNING', user = user)
-                    
-                    
         logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Generate ICES-XML files', user=user)
-                    
-                    
         try:
             # Check if thread is running.
             if self._generate_ices_xml_thread:
                 if self._generate_ices_xml_thread.is_alive():
                     error_message = u"Generate ICES-XML files is already running. Please try again later."
-                    admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-                    admin_models.addResultLog(logrow_id, result_log = error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
                     return
-            # Use a thread to relese the user.
+            # Use a thread to relese the user. Log file closed in thread.
             self._generate_ices_xml_thread = threading.Thread(target = sharkdata_core.GenerateIcesXmlExportFiles().generateIcesXmlExportFiles, 
-                                                              args=(logrow_id, datatype_list, year_from, year_to, monitoring_type, user ))
+                                                              args=(logfile_name, datatype_list, year_from, year_to, monitoring_type, user ))
             self._generate_ices_xml_thread.start()
         except Exception as e:
             error_message = u"Can't generate ICES-XML file." + '\nException: ' + str(e) + '\n'
-            admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-            admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
         #
         return None # No error message.
                  
     def validateIcesXmlInThread(self, datatype_list, user):
         """ """
-        logrow_id = admin_models.createLogRow(command = 'Validate ICES-XML file.', status = 'RUNNING', user = user)
-                    
-                    
         logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Validate ICES-XML file', user=user)
-                    
-                    
         try:
             # Check if thread is running.
             if self._validate_ices_xml_thread:
                 if self._validate_ices_xml_thread.is_alive():
                     error_message = u"Validate ICES-XML file is already running. Please try again later."
-                    admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-                    admin_models.addResultLog(logrow_id, result_log = error_message)
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
                     return
-            # Use a thread to relese the user.
+            # Use a thread to relese the user. Log file closed in thread.
             self._validate_ices_xml_thread = threading.Thread(target = sharkdata_core.ValidateIcesXml().validateIcesXml, 
-                                                              args=(logrow_id, datatype_list, user ))
+                                                              args=(logfile_name, datatype_list, user ))
             self._validate_ices_xml_thread.start()
         except Exception as e:
             error_message = u"Can't validate ICES-XML file." + '\nException: ' + str(e) + '\n'
-            admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-            admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
         #
         return None # No error message.
                  
@@ -230,41 +207,24 @@ class SharkdataAdminUtils(object):
     
     def generateDwcaExportFilesInThread(self, datatype_list, year_from, year_to, status, user):
         """ """
-        logrow_id = admin_models.createLogRow(command = 'Generate DwC-A files.', status = 'RUNNING', user = user)
-                    
-                    
         logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Generate DwC-A files', user=user)
-                    
-                    
         try:
             # Check if thread is running.
             if self._generate_dwca_thread:
                 if self._generate_dwca_thread.is_alive():
                     error_message = u"Generate DwC-A files is already running. Please try again later."
-                    admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-                    admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
                     #
                     return
-            # Use a thread to relese the user.
+            # Use a thread to relese the user. Log file closed in thread.
             self._generate_dwca_thread = threading.Thread(target = sharkdata_core.GenerateDwcaExportFiles().generateDwcaExportFiles, 
-                                                              args=(logrow_id, datatype_list, year_from, year_to, status, user ))
+                                                              args=(logfile_name, datatype_list, year_from, year_to, status, user ))
             self._generate_dwca_thread.start()
         except Exception as e:
             error_message = u"Can't generate DwC-A files." + '\nException: ' + str(e) + '\n'
-            admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-            admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
         #
         return None # No error message.
                  

@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 import app_resources.models as models
 import app_resources.forms as forms
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 import sharkdata_core
 
 def resourceContentText(request, resource_name):
@@ -109,57 +109,29 @@ def deleteResource(request, resource_id):
                 error_message = 'Not a valid user. Please try again...'   
             #
             if error_message == None:
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete resource', user=user)
                 if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-#                     logrow_id = admin_models.createLogRow(command = 'Delete resource (FTP)', status = 'RUNNING', user = user)
-                    
-                    
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete-resource-FTP', user=user)
-                    
-                    
                     try:
                         sharkdata_core.ResourcesUtils().deleteFileFromFtp(resource.resource_file_name)
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                        
-                        
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                        
-                        
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, 
+                                                                       log_row='Resource deleted from the FTP area: ' + resource.resource_file_name)
                     except:
-                        error_message = u"Can't delete resources from the database."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
+                        error_message = "Can't delete resources from the FTP area. File: " + resource.resource_file_name
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            #
+            
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Delete resource (DB)', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete resource-DB', user=user)
-                    
-                    
                 try:
                     resource = models.Resources.objects.get(id=resource_id)
                     resource.delete()
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                        
-                        
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, 
+                                                                   log_row='Resource deleted from DB: ' + resource.resource_file_name)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                        
-                        
                 except:
-                    error_message = u"Can't delete resource from the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
-                        
+                    error_message = "Can't delete resources from the database. File: " + resource.resource_file_name
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
+            # 
             if error_message == None:
                 return HttpResponseRedirect("/resources")
         #

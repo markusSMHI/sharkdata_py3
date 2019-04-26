@@ -9,7 +9,7 @@ import traceback
 from django.conf import settings
 
 import app_datasets.models as models
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 # 
 import sharkdata_core
 
@@ -165,7 +165,7 @@ class ArchiveManager(object):
 #             admin_models.changeLogRowStatus(logfile_name, status = 'FINISHED (Errors: ' + str(error_counter) + ')')
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED (Errors: ' + str(error_counter) + ')')
         else:
-#             admin_models.changeLogRowStatus(logfile_name, status = 'FINISHED')
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
 
         if settings.DEBUG:

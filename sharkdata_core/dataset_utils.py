@@ -10,7 +10,7 @@ import threading
 from django.conf import settings
 import app_datasets.models as datasets_models
 import app_ctdprofiles.models as ctdprofiles_models
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 import sharkdata_core
 
 @sharkdata_core.singleton

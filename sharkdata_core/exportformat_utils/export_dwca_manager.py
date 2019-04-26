@@ -11,7 +11,7 @@ from django.conf import settings
 import sharkdata_core
 import app_exportformats.models as export_models
 import app_datasets.models as datasets_models
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 
 @sharkdata_core.singleton
 class GenerateDwcaExportFiles(object):

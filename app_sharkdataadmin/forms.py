@@ -21,8 +21,6 @@ class DeleteAllDatasetsForm(forms.Form):
 
 class LoadAllDatasetsForm(forms.Form):
     """ Datasets. """
-#     update_metadata = forms.BooleanField(label='Update metadata', required = False, initial = False)
-#     generate_archives = forms.BooleanField(label='Generate archives', required = False, initial = False)
     delete_old_ftp_versions = forms.BooleanField(label='Delete old versions', required = False, initial = False)
     user = forms.CharField(label="User")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
@@ -61,18 +59,8 @@ class GenerateDwcaExportFilesForm(forms.Form):
     phytoplankton = forms.BooleanField(label='Phytoplankton', required = False, initial = True)
     zoobenthos = forms.BooleanField(label='Zoobenthos', required = False, initial = True)
     zooplankton = forms.BooleanField(label='Zooplankton', required = False, initial = True)
-#     year_from = forms.CharField(initial = last_year)
-#     year_to = forms.CharField(initial = last_year)
-    
-    
-    year_from = forms.CharField(initial = last_year-1)
-    year_to = forms.CharField(initial = last_year-1)
-    
-#     year_from = forms.CharField(initial = '2008')
-#     year_to = forms.CharField(initial = '2008')
-    
-    
-    
+    year_from = forms.CharField(initial = last_year)
+    year_to = forms.CharField(initial = last_year)
     monitoring_type = forms.ChoiceField(choices=status_for_monitoring_type)
     #
     user = forms.CharField(label="User")

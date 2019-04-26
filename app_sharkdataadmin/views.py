@@ -12,7 +12,7 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 
 from app_sharkdataadmin import forms
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 import app_datasets.models as datasets_models
 import app_resources.models as resources_models
 import app_exportformats.models as exportformats_models
@@ -43,30 +43,16 @@ def deleteDwcaExportFiles(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Delete all DarwinCore-Archive files.', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete-all-DarwinCore-Archive-files', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all DwC-A files', user=user) 
                 try:
                     exportformats_models.ExportFiles.objects.all().filter(format = 'DwC-A').delete()
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                        
-                        
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                        
-                        
                 except:
                     error_message = u"Can't delete DarwinCore-Archive files."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
+            
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
         #
@@ -166,30 +152,15 @@ def deleteIcesXmlExportFiles(request):
 #                         admin_models.addResultLog(logrow_id, result_log = error_message)
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Delete all ICES-XML files from DB', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all ICES-XML files from DB', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all ICES-XML files', user=user)
                 try:
                     exportformats_models.ExportFiles.objects.all().filter(format = 'ICES-XML').delete()
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-
-                        
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                        
-                        
                 except:
                     error_message = u"Can't delete datasets from the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
             # OK.
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
@@ -316,15 +287,17 @@ def sharkDataAdmin(request):
     except:
         pass
     
-    logrows = admin_models.CommandLog.objects.all().order_by('-id')[:log_rows_per_page] # Reverse order.
+#     logrows = admin_models.CommandLog.objects.all().order_by('-id')[:log_rows_per_page] # Reverse order.
+    logrows = []
     #
     return render_to_response("sharkdata_admin.html",
                               {'logrows' : logrows})
 
 def viewLog(request, log_id):
     """ """
-    command_log = admin_models.CommandLog.objects.get(id=log_id)
-    result_log = command_log.result_log
+#     command_log = admin_models.CommandLog.objects.get(id=log_id)
+#     result_log = command_log.result_log
+    result_log = ''
     #
     response = HttpResponse(content_type = 'text/plain; charset=cp1252')    
     response.write(result_log.encode('cp1252'))
@@ -355,40 +328,24 @@ def deleteDatasets(request):
             #
             if error_message == None:
                 if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-#                     logrow_id = admin_models.createLogRow(command = 'Delete all datasets from FTP', status = 'RUNNING', user = user)
-                    
-                    
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all datasets from FTP', user=user)
-                    
-                    
+                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all datasets from FTP area', user=user)
                     try:
                         error_message = sharkdata_core.DatasetUtils().deleteAllFilesFromFtp()
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                     except:
                         error_message = u"Can't delete datasets from the FTP area."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                         sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Delete all datasets from DB', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all datasets from DB', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all datasets', user=user)
                 try:
                     datasets_models.Datasets.objects.all().delete()
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                 except:
                     error_message = u"Can't delete datasets from the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                         
@@ -428,25 +385,15 @@ def loadDatasets(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             # Load datasets.
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Load all datasets from FTP to DB', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all datasets from FTP to DB', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all datasets', user=user)
                 try:
                     error_counter = sharkdata_core.DatasetUtils().writeLatestDatasetsInfoToDb(logfile_name, user)
                     if error_counter > 0:
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED (Errors: ' + str(error_counter) + ')')
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED Errors:' + str(error_counter))
                     else:
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                 except Exception as e:
                     error_message = u"Can't load datasets and save to the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                         
@@ -459,22 +406,16 @@ def loadDatasets(request):
                     try:
                         error_counter = sharkdata_core.DatasetUtils().deleteOldFtpVersions(logfile_name, user)
                         if error_counter > 0:
-#                             admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED (Errors: ' + str(error_counter) + ')')
                             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED Errors:' + str(error_counter))
                         else:
-#                             admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
                             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                     except Exception as e:
                         error_message = u"Can't delete old versions in the FTP area."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                         sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-                        if settings.DEBUG: print('\nError: ' + error_message + '\nException: ' + str(e) + '\n')
-                        settings.LOGGER.error('\nError: ' + error_message + '\nException: ' + str(e) + '\n')                    
+                        if settings.DEBUG: 
+                            print('\nError: ' + error_message + '\nException: ' + str(e) + '\n')
+                            settings.LOGGER.error('\nError: ' + error_message + '\nException: ' + str(e) + '\n')                    
             # OK.
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
@@ -513,47 +454,27 @@ def deleteResources(request):
             #
             if error_message == None:
                 if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-#                     logrow_id = admin_models.createLogRow(command = 'Delete all resources (FTP)', status = 'RUNNING', user = user)
-                    
-                    
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all resources-FTP', user=user)
-                    
-                    
+                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all resources from FTP area', user=user)
                     try:
                         sharkdata_core.ResourcesUtils().deleteAllFilesFromFtp()
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                     except:
                         error_message = u"Can't delete resources from the database."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                         sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Delete all resources (DB)', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all resources-DB', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all resources', user=user)
                 try:
                     resources_models.Resources.objects.all().delete()
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                 except:
                     error_message = u"Can't delete resources from the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
+            #
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
         #
@@ -588,26 +509,16 @@ def loadResources(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Load all resources from FTP to DB', status = 'RUNNING', user = user)
-                    
-                    
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all resources from FTP to DB', user=user)
-                    
-                    
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all resources', user=user)
                 try:
                     sharkdata_core.ResourcesUtils().writeResourcesInfoToDb(user)
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                 except Exception as e:
                     error_message = u"Can't load resources and save to the database."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message + " Exception: " + str(e))
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
+            # 
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
         #
@@ -641,24 +552,15 @@ def updateSpeciesObs(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Update species observations', status = 'RUNNING', user = user)
-                    
-                    
                 logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Update species observations', user=user)
-                    
-                    
                 try:
                     error_message = sharkdata_core.SharkdataAdminUtils().updateSpeciesObsInThread(logfile_name)
-                    # admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                 except:
                     error_message = u"Can't update species observations from datasets."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
             # OK.
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
@@ -691,25 +593,17 @@ def cleanUpSpeciesObs(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-#                 logrow_id = admin_models.createLogRow(command = 'Clean up species observations', status = 'RUNNING', user = user)
-                    
-                    
                 logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Clean up species observations', user=user)
-                    
-                    
                 try:
                     error_message = sharkdata_core.SharkdataAdminUtils().cleanUpSpeciesObsInThread(logfile_name)
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                     # admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
                 except:
                     error_message = u"Can't clean up species observations."
-#                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                     admin_models.addResultLog(logrow_id, result_log = error_message)
-                        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
+            # 
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
         #

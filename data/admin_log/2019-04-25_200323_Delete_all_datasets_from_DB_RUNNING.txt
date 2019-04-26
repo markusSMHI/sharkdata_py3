@@ -1,5 +1,0 @@
-
-command: Delete all datasets from DB
-started_at: 2019-04-25 200323
-user: apa
-

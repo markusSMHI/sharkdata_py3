@@ -102,7 +102,6 @@
                         <th>Command</th>
                         <th>Status</th>
                         <th>Started</th>
-                        <th>Finished</th>
                         <th>Result&nbsp;log</th>
                     </tr>
                 </thead>
@@ -112,7 +111,6 @@
                         <td>{{ logrow.command_name }}</td>
                         <td>{{ logrow.status }}</td>
                         <td>{{ logrow.started_datetime | date:'Y-m-d H:i:s' }}</td>
-                        <td>{{ logrow.finished_datetime | date:'Y-m-d H:i:s' }}</td>
                         <td><a class="btn btn-primary btn-xs" href="/sharkdataadmin/view_log/{{ logrow.id }}">View result</a></td>
                     </tr>
                 {% endfor %}

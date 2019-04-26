@@ -30,24 +30,12 @@ DEBUG = True # <REPLACE>
 ALLOWED_HOSTS = ['localhost', '<REPLACE>']
 
 
-LOGGER = logging.getLogger('SHARKdata')
-LOGGING_PATH = None
-# LOGGING_PATH = '<REPLACE>'
-
-
 # Application specific constants.
-SHARKDATA_DATA_IN = 'data_in'
-SHARKDATA_DATA = 'data'
-
-# parent_dir = pathlib.Path(__file__).parent.parent
-parent_dir = pathlib.Path(BASE_DIR)
+parent_dir = pathlib.Path(BASE_DIR).parent
+LOGGER = logging.getLogger('SHARKdata')
+LOGGING_PATH = pathlib.Path(parent_dir, 'sharkdata_log')
 SHARKDATA_DATA_IN = pathlib.Path(parent_dir, 'data_in')
 SHARKDATA_DATA = pathlib.Path(parent_dir, 'data')
-
-
-# APP_DATASETS_FTP_PATH = 'D:/arnold/4_sharkdata/sharkdata_ftp'
-# APP_DATASETS_FTP_PATH = 'C:/Users/example/Desktop/FTP' # Windows example.
-# APP_DATASETS_FTP_PATH = '/srv/django/proj_sharkdata/' # Unix example.
 APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST = {'apa': 'bepa'}
 
 
@@ -107,7 +95,7 @@ WSGI_APPLICATION = 'sharkdata_py3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'data', 'db', 'db.sqlite3'),
+        'NAME': str(pathlib.Path(SHARKDATA_DATA, 'db', 'db.sqlite3')),
     }
 }
 
@@ -150,9 +138,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 # Static files will be collected and put here by running the 
 # command: python manage.py collectstatic
-STATIC_ROOT = '/srv/django/sharkdata/static/'
+STATIC_ROOT = str(pathlib.Path(SHARKDATA_DATA, 'static'))
 STATICFILES_DIRS = (
-    '/srv/django/sharkdata/src/app_sharkdata_base/static',
+    str(pathlib.Path(BASE_DIR, 'app_sharkdata_base', 'static')), 
 )
 
 STATIC_URL = '/static/'
@@ -167,9 +155,9 @@ if LOGGING_PATH:
             'file_error': {
                 'level': 'ERROR',
                 'class': 'logging.handlers.RotatingFileHandler',
-                'filename': LOGGING_PATH +'sharkdata_errors.log',
+                'filename': str(LOGGING_PATH) +'sharkdata_errors.log',
                 'maxBytes': 1024*1024,
-                'backupCount': 5,
+                'backupCount': 10,
             },
         },
         'loggers': {

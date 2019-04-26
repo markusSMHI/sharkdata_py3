@@ -6,7 +6,7 @@
 
 from django import forms
 
-# class DeleteDatasetForm(forms.Form):
+# class DeleteCtdProfileForm(forms.Form):
 #     """ """
 #     delete_ftp = forms.BooleanField(label='Remove from FTP', required = False, initial = False)
 #     user = forms.CharField(label="User")

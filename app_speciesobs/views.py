@@ -17,7 +17,7 @@ import app_speciesobs.models as models
 import app_datasets.models as datasets_models
 import app_speciesobs.forms as forms
 import django.core.paginator as paginator
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 import sharkdata_core
 
 

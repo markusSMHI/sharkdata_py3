@@ -14,7 +14,7 @@ from  wsgiref.util import FileWrapper
 import django.core.paginator as paginator
 import app_datasets.models as models
 import app_datasets.forms as forms
-import app_sharkdataadmin.models as admin_models
+# import app_sharkdataadmin.models as admin_models
 import sharkdata_core
 
 def datasetDataText(request, dataset_name):
@@ -383,63 +383,29 @@ def deleteDataset(request, dataset_id):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
+                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete dataset', user=user)
                 if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-                    # Delete the marked dataset version. Earlier versions vill be used, if there are any. 
-#                     logrow_id = admin_models.createLogRow(command = 'Delete dataset (FTP)', status = 'RUNNING', user = user)
-                    
-                    
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete dataset-FTP', user=user)
-                    
-                    
                     try:
                         error_message = sharkdata_core.DatasetUtils().deleteFileFromFtp(dataset.dataset_file_name)
                         error_message = sharkdata_core.DatasetUtils().writeLatestDatasetsInfoToDb(user)
-#                         admin_models.changeLogRowStatus(logrow_id, status='FINISHED')
-                        
-                        
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                        
-                        
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, 
+                                                                       log_row='Dataset deleted from FTP area:' + dataset.dataset_file_name)
                     except:
-                        error_message = u"Can't delete dataset from the ftp."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
-
-                        
+                        error_message = "Can't delete dataset from FTP. File: " + dataset.dataset_file_name
                         sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                         
-                        
-                else:
-#                     logrow_id = admin_models.createLogRow(command = 'Delete dataset (DB)', status = 'RUNNING', user = user)
-                    
-                    
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete dataset-DB', user=user)
-                    
-                    
+                if error_message == None:                    
                     try:
                         dataset = models.Datasets.objects.get(id=dataset_id)
                         dataset.delete()
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='- Dataset deleted: ' + dataset.dataset_file_name)
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                        
-                    
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='- Dataset deleted from DB: ' + dataset.dataset_file_name)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-
-                    
                     except:
-                        error_message = u"Can't delete dataset from the database."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
+                        error_message = "Can't delete dataset from the database. File: " + dataset.dataset_file_name
                         sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-
-                        
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
+            
             if error_message == None:
                 return HttpResponseRedirect("/datasets")
         #

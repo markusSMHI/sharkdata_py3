@@ -1,9 +1,0 @@
-
-command: Load all resources from FTP to DB
-started_at: 2019-04-25 200331
-user: apa
-
-
-status: FINISHED
-finished_at: 2019-04-25_200331
-
