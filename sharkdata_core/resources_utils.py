@@ -89,7 +89,7 @@ class ResourcesUtils(object):
         self.clear()
         #
         file_name = str(uploaded_file)
-        file_path = pathlib.Path(self._data_resources, file_name)
+        file_path = pathlib.Path(self._data_in_resources, file_name)
         # Save by reading/writing chunks..
         destination = open(file_path, 'wb+')
         try:
@@ -102,7 +102,7 @@ class ResourcesUtils(object):
         """ Delete one resource from the FTP area. """
         self.clear()
         #
-        file_path = pathlib.Path(self._data_resources, file_name)
+        file_path = pathlib.Path(self._data_in_resources, file_name)
         # Delete the file.
         file_path.unlink()
 
@@ -110,8 +110,8 @@ class ResourcesUtils(object):
         """ Delete all resources from FTP area. """
         self.clear()
         #
-        for file_name in self._data_resources.glob('*'):
-            file_path = pathlib.Path(self._data_resources, file_name)
+        for file_name in self._data_in_resources.glob('*'):
+            file_path = pathlib.Path(self._data_in_resources, file_name)
             if file_path.isfile():
                 file_path.unlink()
 
@@ -132,7 +132,7 @@ class ResourcesUtils(object):
         #
         self.clear()
         #
-        ftp_file_path = pathlib.Path(self._data_resources, file_name)
+        ftp_file_path = pathlib.Path(self._data_in_resources, file_name)
         # Extract info from file name.
         resource_name, resource_type, encoding = self.splitFilename(file_name)
         #
@@ -158,8 +158,8 @@ class ResourcesUtils(object):
     def getResourceFiles(self):
         """ Read filenames from FTP area. """
         resource_files = []
-        for file_name in self._data_resources.glob('*'):
-            file_path = pathlib.Path(self._data_resources, file_name)
+        for file_name in self._data_in_resources.glob('*'):
+            file_path = pathlib.Path(self._data_in_resources, file_name)
             if file_path.is_file():
                 resource_files.append(file_name)
         #

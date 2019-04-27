@@ -105,7 +105,7 @@ def deleteResource(request, resource_id):
         if form.is_valid():
             #
             user = request.POST['user']
-            if user not in settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.keys():
+            if user not in settings.APPS_VALID_USERS_AND_PASSWORDS.keys():
                 error_message = 'Not a valid user. Please try again...'   
             #
             if error_message == None:

@@ -275,7 +275,7 @@ def deleteExportFile(request, export_name):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:

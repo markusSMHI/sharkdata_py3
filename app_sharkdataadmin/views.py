@@ -39,7 +39,7 @@ def deleteDwcaExportFiles(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -100,7 +100,7 @@ def generateDwcaExportFiles(request):
 #                ('Zooplankton' in datatype_list):
 #                 error_message = 'Support for Zoobenthos only, others are under development. Please try again...'   
             #
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -137,7 +137,7 @@ def deleteIcesXmlExportFiles(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
 #             if error_message == None:
@@ -209,7 +209,7 @@ def generateIcesXmlExportFiles(request):
 #                ('Zooplankton' in datatype_list):
 #                 error_message = 'Support for Zoobenthos only, others are under development. Please try again...'   
             #
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -260,7 +260,7 @@ def validateIcesXmlExportFiles(request):
 #                ('Zooplankton' in datatype_list):
 #                 error_message = 'Support for Zoobenthos only, others are under development. Please try again...'   
             #
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -323,7 +323,7 @@ def deleteDatasets(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -381,7 +381,7 @@ def loadDatasets(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             # Load datasets.
             if error_message == None:
@@ -449,7 +449,7 @@ def deleteResources(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -505,7 +505,7 @@ def loadResources(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -548,7 +548,7 @@ def updateSpeciesObs(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -589,7 +589,7 @@ def cleanUpSpeciesObs(request):
             #
             user = request.POST['user']
             password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
@@ -635,7 +635,7 @@ def cleanUpSpeciesObs(request):
 #             #
 #             user = request.POST['user']
 #             password = request.POST['password']
-#             if password != settings.APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST.get(user, None):
+#             if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
 #                 error_message = 'Not a valid user or password. Please try again...'   
 #             #
 #             if error_message == None:

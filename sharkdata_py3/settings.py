@@ -13,36 +13,66 @@ import os
 import pathlib
 import logging
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+ze+9-g*(20_*yr%+0-y(aie6u(#4y0^6g@#=962spje4lder9'
+# Environment variables.
+env_debug = os.environ.get('ENV_DJANGO_DEBUG', 'True')
+env_secret_key = os.environ.get('ENV_DJANGO_SECRET_KEY', '')
+env_allowed_hosts = os.environ.get('ENV_DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
+env_users_and_pw = os.environ.get('ENV_DJANGO_USERS_AND_PW', 'apa:bepa,cepa:depa')
+env_timezone = os.environ.get('ENV_DJANGO_TIMEZONE', 'Europe/Stockholm')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False # <REPLACE>
-DEBUG = True # <REPLACE>
-
-ALLOWED_HOSTS = ['localhost', 'django.mellifica.org']
-
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Application specific constants.
-parent_dir = pathlib.Path(BASE_DIR).parent.parent
+root_dir = pathlib.Path(BASE_DIR).parent.parent
 LOGGER = logging.getLogger('SHARKdata')
-SHARKDATA_DB = pathlib.Path(parent_dir, 'db')
-SHARKDATA_LOG = pathlib.Path(parent_dir, 'log')
-SHARKDATA_STATIC = pathlib.Path(parent_dir, 'static')
-SHARKDATA_DATA_IN = pathlib.Path(parent_dir, 'data_in')
-SHARKDATA_DATA = pathlib.Path(parent_dir, 'data')
-APPS_VALID_USERS_AND_PASSWORDS_FOR_TEST = {'apa': 'bepa'}
+SHARKDATA_DB = pathlib.Path(root_dir, 'db')
+SHARKDATA_LOG = pathlib.Path(root_dir, 'log')
+SHARKDATA_STATIC = pathlib.Path(root_dir, 'static')
+SHARKDATA_DATA_IN = pathlib.Path(root_dir, 'data_in')
+SHARKDATA_DATA = pathlib.Path(root_dir, 'data')
 
+# Create missing directories.
+if not SHARKDATA_DB.exists():
+    SHARKDATA_DB.mkdir(parents=True)
+if not SHARKDATA_LOG.exists():
+    SHARKDATA_LOG.mkdir(parents=True)
+if not SHARKDATA_STATIC.exists():
+    SHARKDATA_STATIC.mkdir(parents=True)
+if not SHARKDATA_DATA_IN.exists():
+    SHARKDATA_DATA_IN.mkdir(parents=True)
+if not SHARKDATA_DATA.exists():
+    SHARKDATA_DATA.mkdir(parents=True)
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '+ze+9-g*(20_*yr%+0-y(aie6u(#4y0^6g@#=962spje4lder9'
+if env_secret_key:
+    SECRET_KEY = env_secret_key
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+if env_debug.lower() in ['true', 't', 'yes', 'y']:
+    DEBUG = True
+
+ALLOWED_HOSTS = ['localhost']
+if env_allowed_hosts:
+    host_list = []
+    for host in env_allowed_hosts.split(','):
+        host_list.append(host)
+    ALLOWED_HOSTS = host_list
+
+APPS_VALID_USERS_AND_PASSWORDS = {'apa': 'bepa'}
+if env_users_and_pw:
+    user_pw_dict = {}
+    for pair in env_users_and_pw.split(','):
+        user, pw = pair.split(':')
+        user_pw_dict[user] = pw
+    APPS_VALID_USERS_AND_PASSWORDS = user_pw_dict
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -97,7 +127,8 @@ WSGI_APPLICATION = 'sharkdata_py3.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(pathlib.Path('/db/db.sqlite3')),
+        'NAME': str(pathlib.Path(SHARKDATA_DB, 'db.sqlite3')),
+#         'NAME': str(pathlib.Path('/db/db.sqlite3')),
     }
 }
 
@@ -119,21 +150,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
 # TIME_ZONE = 'UTC'
-TIME_ZONE = 'Europe/Stockholm'
+TIME_ZONE = env_timezone
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -145,7 +174,6 @@ STATICFILES_DIRS = (
 )
 
 STATIC_URL = '/static/'
-
 
 # Logging.
 if SHARKDATA_LOG:
