@@ -4,6 +4,8 @@
 # Copyright (c) 2013-2016 SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
+import os
+
 import pathlib
 import traceback
 import datetime
@@ -19,8 +21,8 @@ class GenerateIcesXmlExportFiles(object):
     
     def __init__(self):
         """ """
-        self._ftp_dir_path = os.path.join(settings.APP_DATASETS_FTP_PATH, 'datasets')
-        self._export_dir_path = os.path.join(settings.APP_DATASETS_FTP_PATH, 'exports')
+        self._ftp_dir_path = os.path.join(settings.SHARKDATA_DATA_IN, 'datasets')
+        self._export_dir_path = os.path.join(settings.SHARKDATA_DATA, 'exports')
         self._translate_taxa = None
     
     def generateIcesXmlExportFiles(self, logfile_name, 
@@ -55,44 +57,40 @@ class GenerateIcesXmlExportFiles(object):
                     #
                     year_int += 1
             #
-            if error_counter > 0:
-                admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED (Errors: ' + str(error_counter) + ')')
-            else:
-                admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-                
             # Log missing stations.
             missing_station_list = sharkdata_core.ExportStations().get_missing_station_list()
             if len(missing_station_list) > 0:
-#                 admin_models.addResultLog(logrow_id, result_log = 'Missing station(s): ')
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Missing station(s): ')
                 for missing_station in sorted(missing_station_list):
-#                     admin_models.addResultLog(logrow_id, result_log = '- ' + missing_station)
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='- ' + missing_station)
-                    if settings.DEBUG: print('DEBUG: missing station: ' + missing_station)
-#                 admin_models.addResultLog(logrow_id, result_log = '')
+                    if settings.DEBUG: 
+                        print('DEBUG: missing station: ' + missing_station)
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='')
                 
             # Log missing taxa.
             missing_taxa_list = sharkdata_core.TranslateTaxa().get_missing_taxa_list()
             if len(missing_taxa_list) > 0:
-                admin_models.addResultLog(logrow_id, result_log = 'Missing taxa: ')
-                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Missing taxa: ')
                 for missing_taxa in sorted(missing_taxa_list):
                     # Don't log filtered taxa. 
                     if missing_taxa not in sharkdata_core.ExportFilter().get_filter_remove_list('scientific_name'):
-                        admin_models.addResultLog(logrow_id, result_log = '- ' + missing_taxa)
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                        if settings.DEBUG: print('DEBUG: missing taxon: ' + missing_taxa)
-                admin_models.addResultLog(logrow_id, result_log = '')
-                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='- ' + missing_taxa)
+                        if settings.DEBUG: 
+                            print('DEBUG: missing taxon: ' + missing_taxa)
+                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='')
             #
-            if settings.DEBUG: print('DEBUG: ICES-XML generation FINISHED')
+            if error_counter > 0:
+                sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, 'FAILED')
+            else:
+                sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, 'FINISHED')
+            #  
+            if settings.DEBUG: 
+                print('DEBUG: ICES-XML generation FINISHED')
         except Exception as e:
-            admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='FAILED')
             error_message = u"Can't generate ICES-XML file." + '\nException: ' + str(e) + '\n'
-            admin_models.addResultLog(logrow_id, result_log = error_message)
-            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, 'FAILED')
 
         
     def generateOneIcesXml(self, logfile_name, error_counter, 
@@ -126,7 +124,6 @@ class GenerateIcesXmlExportFiles(object):
             #
             try:
                 zip_file_name = db_dataset.dataset_file_name
-#                 admin_models.addResultLog(logrow_id, result_log = 'Reading archive file: ' + zip_file_name + '...')
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Reading archive file: ' + zip_file_name + '...')
                 if settings.DEBUG:
                     if settings.DEBUG: print('DEBUG: ICES-ZIP processing: ' + zip_file_name)            
@@ -185,7 +182,6 @@ class GenerateIcesXmlExportFiles(object):
             except Exception as e:
                 error_counter += 1 
                 traceback.print_exc()
-#                 admin_models.addResultLog(logrow_id, result_log = 'ERROR: Failed to generate ICES-XML from: ' + zip_file_name + '.')                
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to generate ICES-XML from: ' + zip_file_name + '.')
         #
         try:
@@ -250,6 +246,5 @@ class GenerateIcesXmlExportFiles(object):
         except Exception as e:
             error_counter += 1 
             traceback.print_exc()
-#             admin_models.addResultLog(logrow_id, result_log = 'ERROR: Failed to generate ICES-XML files. Exception: ' + str(e))              
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to generate ICES-XML files. Exception: ' + str(e))
 

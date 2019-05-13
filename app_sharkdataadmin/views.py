@@ -4,6 +4,8 @@
 # Copyright (c) 2013-2016 SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
+import pathlib
+import datetime
 # import json
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template.context_processors import csrf
@@ -140,17 +142,6 @@ def deleteIcesXmlExportFiles(request):
             if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
-#             if error_message == None:
-#                 if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-#                     logrow_id = admin_models.createLogRow(command = 'Delete all datasets from FTP', status = 'RUNNING', user = user)
-#                     try:
-#                         error_message = dataset_utils.DatasetUtils().deleteAllFilesFromFtp()
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
-#                     except:
-#                         error_message = u"Can't delete datasets from the FTP area."
-#                         admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
-#                         admin_models.addResultLog(logrow_id, result_log = error_message)
-            #
             if error_message == None:
                 logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all ICES-XML files', user=user)
                 try:
@@ -280,27 +271,66 @@ def validateIcesXmlExportFiles(request):
 
 def sharkDataAdmin(request):
     """ """
-    log_rows_per_page = 5
+    per_page = 5
     try:
-        if 'log_rows_per_page' in request.GET:
-            log_rows_per_page = int(request.GET['log_rows_per_page'])
+        if 'per_page' in request.GET:
+            per_page = int(request.GET['per_page'])
     except:
         pass
     
-#     logrows = admin_models.CommandLog.objects.all().order_by('-id')[:log_rows_per_page] # Reverse order.
     logrows = []
+    log_file_list = sharkdata_core.SharkdataAdminUtils().get_log_files()
+    log_file_list = log_file_list[0:per_page]
+    
+    for log_file in sorted(log_file_list, reverse=True):
+        print('DEBUG: ', log_file)
+        
+        log_file_path = pathlib.Path(log_file)
+        stem = log_file_path.stem
+        parts = stem.split('_')
+        
+        date = parts[0]
+        time = parts[1]
+        command = ' '.join(parts[2:-1])
+        status = parts[-1]
+
+        logrow = {}
+        logrow['date'] = date
+        logrow['time'] = time
+        logrow['started_datetime'] = datetime.datetime.strptime(date + ' ' +  time, '%Y-%m-%d %H%M%S')
+        logrow['command_name'] = command
+        logrow['status'] = status
+        logrow['file_stem'] = stem
+        
+        logrows.append(logrow)
+        
+        print('DEBUG2: ', logrows)
+
+#                 {% for logrow in logrows %}
+#                     <tr>
+#                         <td>{{ logrow.command_name }}</td>
+#                         <td>{{ logrow.status }}</td>
+#                         <td>{{ logrow.started_datetime | date:'Y-m-d H:i:s' }}</td>
+#                         <td><a class="btn btn-primary btn-xs" href="/sharkdataadmin/view_log/{{ logrow.id }}">View result</a></td>
+#                     </tr>
+#                 {% endfor %}
+
+
+    #logrows = []
     #
     return render_to_response("sharkdata_admin.html",
                               {'logrows' : logrows})
 
-def viewLog(request, log_id):
+def viewLog(request, file_stem):
     """ """
-#     command_log = admin_models.CommandLog.objects.get(id=log_id)
-#     result_log = command_log.result_log
-    result_log = ''
+    log_content = ''
+    try:
+        log_content = sharkdata_core.SharkdataAdminUtils().get_log_file_content(file_stem)
+    except:
+        pass
     #
     response = HttpResponse(content_type = 'text/plain; charset=cp1252')    
-    response.write(result_log.encode('cp1252'))
+    response.write(log_content.encode('cp1252'))
     return response
 
 ##### Datasets. #####
@@ -598,7 +628,6 @@ def cleanUpSpeciesObs(request):
                     error_message = sharkdata_core.SharkdataAdminUtils().cleanUpSpeciesObsInThread(logfile_name)
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                    # admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
                 except:
                     error_message = u"Can't clean up species observations."
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)

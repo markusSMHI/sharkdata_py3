@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^speciesobs_update/', app_sharkdataadmin.views.updateSpeciesObs),
     url(r'^speciesobs_cleanup/', app_sharkdataadmin.views.cleanUpSpeciesObs),
     #
-    url(r'^view_log/(?P<log_id>\d+)/', app_sharkdataadmin.views.viewLog),
+#     url(r'^view_log/(?P<log_id>\d+)/', app_sharkdataadmin.views.viewLog),
+    url(r'^view_log/(?P<file_stem>[\w\-\_]+)/$', app_sharkdataadmin.views.viewLog),
 
 ]

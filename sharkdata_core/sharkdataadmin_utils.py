@@ -73,12 +73,41 @@ class SharkdataAdminUtils(object):
     
     def get_log_files(self):
         """ """
+        counter = 0
         log_list = []
         if self._logfile_dir_path.exists():
-            for file_path in sorted(self._logfile_dir_path.glob('*.txt')):
-                log_list.append(file_path)
+            for file_name in sorted(list(self._logfile_dir_path.glob('*.txt')), reverse=True):
+                counter += 1
+                if counter <= 100:
+                    log_list.append(file_name)
+                else: 
+                    # Remove old files.
+                    file_path = pathlib.Path(file_name)
+                    if file_path.exists():
+                        file_path.unlink()
                 
         return log_list
+    
+    def get_log_file_content(self, file_stem):
+        """ """
+        content = ''
+        logfile_path = pathlib.Path(self._logfile_dir_path, file_stem + '.txt')
+        if logfile_path.exists():
+            with logfile_path.open('r') as logfile:
+                content = logfile.read()
+        else:
+            # Check if status changed.
+            parts = file_stem.split('_')
+            file_stem_without_status = '_'.join(parts[0:-1])
+            file_list = list(self._logfile_dir_path.glob(file_stem_without_status + '*.txt'))
+            if len(file_list) > 0:
+                file_name = file_list[0]
+                logfile_path = pathlib.Path(file_name)
+                if logfile_path.exists():
+                    with logfile_path.open('r') as logfile:
+                        content = logfile.read()
+                
+        return content
     
     ##### Datasets #####
     
@@ -201,6 +230,38 @@ class SharkdataAdminUtils(object):
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
         #
+        return None # No error message.
+                 
+    def deleteIcesXmlFiles(self, logfile_name):
+        """ """
+
+        for file_name in list(self._logfile_dir_path.glob('ICES-XML*')):
+            file_path = pathlib.Path(file_name)
+            if file_path.exists():
+                
+                file_path.unlink()
+
+
+
+#         logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Validate ICES-XML file', user=user)
+#         try:
+#             # Check if thread is running.
+#             if self._validate_ices_xml_thread:
+#                 if self._validate_ices_xml_thread.is_alive():
+#                     error_message = u"Validate ICES-XML file is already running. Please try again later."
+#                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+#                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+#                     #
+#                     return
+#             # Use a thread to relese the user. Log file closed in thread.
+#             self._validate_ices_xml_thread = threading.Thread(target = sharkdata_core.ValidateIcesXml().validateIcesXml, 
+#                                                               args=(logfile_name, datatype_list, user ))
+#             self._validate_ices_xml_thread.start()
+#         except Exception as e:
+#             error_message = u"Can't validate ICES-XML file." + '\nException: ' + str(e) + '\n'
+#             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+#             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+#         #
         return None # No error message.
                  
     ##### ExportFormats, DwC-A #####

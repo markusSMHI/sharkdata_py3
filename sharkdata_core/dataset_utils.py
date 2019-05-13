@@ -202,17 +202,14 @@ class DatasetUtils(object):
         archive = sharkdata_core.SharkArchive(self._data_in_datasets)
         for file_name in sorted(archive.getLatestSharkArchiveFilenames()):
             if logfile_name:
-#                 admin_models.addResultLog(logrow_id, result_log = 'Loading file: ' + file_name + '...')                
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Loading file: ' + file_name + '...')
             try:
                 error_string = self.writeFileInfoToDb(file_name, logfile_name, user)
                 if error_string:
                     error_counter += 1 
-#                     admin_models.addResultLog(logrow_id, result_log = 'ERROR: Failed to load: ' + file_name + '. Error: ' + error_string)
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + error_strin)
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + error_string)
             except Exception as e:
                 error_counter += 1 
-#                 admin_models.addResultLog(logrow_id, result_log = 'ERROR: Failed to load: ' + file_name + '. Error: ' + str(e))
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + str(e))
         #
         return error_counter
@@ -238,7 +235,6 @@ class DatasetUtils(object):
                     encoding = 'cp1252'
                     metadata = str(metadata, encoding, 'strict')   
                 except Exception as e:
-#                     admin_models.addResultLog(logrow_id, result_log = 'WARNING: ' + str(e))
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='WARNING: ' + str(e))
                 #
                 try:
@@ -246,8 +242,7 @@ class DatasetUtils(object):
                     encoding = 'cp1252'
                     metadata_auto = str(metadata_auto, encoding, 'strict')
                 except Exception as e:
-                    admin_models.addResultLog(logrow_id, result_log = 'WARNING: ' + str(e))
-#                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='WARNING: ' + str(e))
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='WARNING: ' + str(e))
                 #
                 columndata_available = zipreader.isDataColumnsAvailable()
                 

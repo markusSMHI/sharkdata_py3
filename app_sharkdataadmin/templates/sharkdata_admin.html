@@ -91,7 +91,7 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span class="panel-title">Executed commands</span> <a href="/sharkdataadmin">Update list</a>
+            <span class="panel-title">Executed commands</span> <a href="/sharkdataadmin/?per_page=5">Update list</a>
             
         </div>
 
@@ -111,7 +111,7 @@
                         <td>{{ logrow.command_name }}</td>
                         <td>{{ logrow.status }}</td>
                         <td>{{ logrow.started_datetime | date:'Y-m-d H:i:s' }}</td>
-                        <td><a class="btn btn-primary btn-xs" href="/sharkdataadmin/view_log/{{ logrow.id }}">View result</a></td>
+                        <td><a class="btn btn-primary btn-xs" href="/sharkdataadmin/view_log/{{ logrow.file_stem }}">View result</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

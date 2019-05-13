@@ -32,7 +32,6 @@ class ArchiveManager(object):
         for dataset in datasets:
             zip_file_name = dataset.dataset_file_name
             #
-#             admin_models.addResultLog(logrow_id, result_log = 'Generating archive file for: ' + zip_file_name + '...')
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Generating archive file for: ' + zip_file_name + '...')
             
             if settings.DEBUG:

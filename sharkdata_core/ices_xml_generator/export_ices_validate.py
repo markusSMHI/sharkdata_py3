@@ -4,6 +4,8 @@
 # Copyright (c) 2013-2016 SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
+import os
+
 import pathlib
 import urllib
 import json
@@ -34,11 +36,12 @@ class ValidateIcesXml(object):
                 error_counter = self.validateOneIcesXml(logfile_name, error_counter, db_export, user)        
         #
         if error_counter > 0:
-            admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED (Errors: ' + str(error_counter) + ')')
+            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, 'FAILED')
         else:
-            admin_models.changeLogRowStatus(logrow_id, status = 'FINISHED')
+            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, 'FINISHED')
  
-        if settings.DEBUG: print('DEBUG: ICES-XML generation FINISHED')    
+        if settings.DEBUG: 
+            print('DEBUG: ICES-XML generation FINISHED')    
                 
     def validateOneIcesXml(self, logfile_name, error_counter, db_export, user):
         """ 
@@ -59,7 +62,13 @@ class ValidateIcesXml(object):
             # Status 'Not checked'.
             elif (db_export.status == 'Not checked'):
 #                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/test,sharkdata,se!exportformats!'
-                url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/sharkdata,se!exportformats!'
+
+
+#                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/sharkdata,se!exportformats!'
+                url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/django,mellifica,org!exportformats!'
+
+                
+                
                 url_part_2 = db_export.export_file_name.replace('.', ',')
                 url_part_3 = '/shark!smhi,se' # TODO: shark@smhi.se
                 url_part_4 = ''
@@ -113,7 +122,6 @@ class ValidateIcesXml(object):
                     db_export.status = 'Test-DATSU-failed'
                     db_export.approved = False
                     # Logging.
-#                     admin_models.addResultLog(logrow_id, result_log = 'ERROR: Failed to validating ICES-XML file. DATSU errors URL: ' + datsu_response.get('ScreenResultURL', '<not defined>'))        
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to validating ICES-XML file. DATSU errors URL: ' + datsu_response.get('ScreenResultURL', '<not defined>'))
                 #
                 db_export.save()
@@ -125,7 +133,6 @@ class ValidateIcesXml(object):
         except Exception as e:
             error_counter += 1 
             traceback.print_exc()
-#             admin_models.addResultLog(logrow_id, result_log = 'ERROR: Failed to validating ICES-XML files. Exception: ' + str(e))   
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to validating ICES-XML files. Exception: ' + str(e))
             
         return error_counter                 
