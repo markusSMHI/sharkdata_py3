@@ -7,37 +7,8 @@
 from datetime import date
 from django import forms
 
-# class ImportDatasetForm(forms.Form):
-#     """ """
-#     import_file = forms.FileField(label="Select a SHARK archive file")
-#     user = forms.CharField(label="User")
-#     password = forms.CharField(label="Password", widget=forms.PasswordInput())
-
-class DeleteAllDatasetsForm(forms.Form):
+class UpdateDatasetsAndResourcesForm(forms.Form):
     """ Datasets. """
-    delete_ftp = forms.BooleanField(label='Remove from FTP', required = False, initial = False)
-    user = forms.CharField(label="User")
-    password = forms.CharField(label="Password", widget=forms.PasswordInput())
-
-class LoadAllDatasetsForm(forms.Form):
-    """ Datasets. """
-    delete_old_ftp_versions = forms.BooleanField(label='Delete old versions', required = False, initial = False)
-    user = forms.CharField(label="User")
-    password = forms.CharField(label="Password", widget=forms.PasswordInput())
-
-class GenerateArchivesForm(forms.Form):
-    """ Datasets. """
-    user = forms.CharField(label="User")
-    password = forms.CharField(label="Password", widget=forms.PasswordInput())
-
-class DeleteAllResourcesForm(forms.Form):
-    """ resources. """
-    delete_ftp = forms.BooleanField(label='Remove from FTP', required = False, initial = False)
-    user = forms.CharField(label="User")
-    password = forms.CharField(label="Password", widget=forms.PasswordInput())
-
-class LoadAllResourcesForm(forms.Form):
-    """ resources. """
     user = forms.CharField(label="User")
     password = forms.CharField(label="Password", widget=forms.PasswordInput())
 
@@ -74,13 +45,18 @@ class DeleteIcesXmlExportFilesForm(forms.Form):
 class GenerateIcesXmlExportFilesForm(forms.Form):
     """ ICES XML. """
     last_year = date.today().year - 1
+    
+    
+    # last_year = 2012
+    
+    
     status_for_ices = (
         ('Not checked', 'Not checked'),
         ('Checked by DC', 'Checked by DC'),
         ('Test', 'Test'),
         )
     #
-    phytobenthos = forms.BooleanField(label='Phytobenthos', required = False, initial = True)
+    phytobenthos = forms.BooleanField(label='Phytobenthos', required = False, initial = False)
     phytoplankton = forms.BooleanField(label='Phytoplankton', required = False, initial = True)
     zoobenthos = forms.BooleanField(label='Zoobenthos', required = False, initial = True)
     zooplankton = forms.BooleanField(label='Zooplankton', required = False, initial = True)

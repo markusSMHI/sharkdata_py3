@@ -16,8 +16,6 @@ urlpatterns = [
     url(r'^table.txt/', app_datasets.views.tableDatasetsText),
     url(r'^table.json/', app_datasets.views.tableDatasetsJson),
     #
-    url(r'^delete/(?P<dataset_id>\d+)', app_datasets.views.deleteDataset),
-    #
     url(r'^(?P<dataset_name>\S+)/data.txt', app_datasets.views.datasetDataText),
     url(r'^(?P<dataset_name>\S+)/data.json', app_datasets.views.datasetDataJson),
     url(r'^(?P<dataset_name>\S+)/data_columns.txt', app_datasets.views.datasetDataColumnsText),

@@ -16,7 +16,5 @@ urlpatterns = [
     url(r'^table.txt/', app_resources.views.tableResourcesText),
     url(r'^table.json/', app_resources.views.tableResourcesJson),
     #
-    url(r'^delete/(?P<resource_id>\d+)', app_resources.views.deleteResource),
-    #
     url(r'^(?P<resource_name>\S+)/content.txt', app_resources.views.resourceContentText),
 ]

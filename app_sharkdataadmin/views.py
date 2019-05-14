@@ -333,80 +333,22 @@ def viewLog(request, file_stem):
     response.write(log_content.encode('cp1252'))
     return response
 
-##### Datasets. #####
+##### Datasets and resources. #####
 
-def deleteDatasets(request):
-    """ Deletes all rows in the database. """
-    error_message = None
-    #
-    if request.method == "GET":
-        #
-        form = forms.DeleteAllDatasetsForm()
-        contextinstance = {'form'   : form,
-                           'error_message' : error_message}
-        contextinstance.update(csrf(request))
-        return render_to_response("delete_datasets.html", contextinstance)
-    elif request.method == "POST":
-        #
-        form = forms.DeleteAllDatasetsForm(request.POST)
-        if form.is_valid():
-            #
-            user = request.POST['user']
-            password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
-                error_message = 'Not a valid user or password. Please try again...'   
-            #
-            if error_message == None:
-                if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all datasets from FTP area', user=user)
-                    try:
-                        error_message = sharkdata_core.DatasetUtils().deleteAllFilesFromFtp()
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                    except:
-                        error_message = u"Can't delete datasets from the FTP area."
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-            #
-            if error_message == None:
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all datasets', user=user)
-                try:
-                    datasets_models.Datasets.objects.all().delete()
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                except:
-                    error_message = u"Can't delete datasets from the database."
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-            # OK.
-            if error_message == None:
-                return HttpResponseRedirect("/sharkdataadmin")
-        #
-        contextinstance = {'form'   : form,
-                           'error_message' : error_message}
-        contextinstance.update(csrf(request))
-        return render_to_response("delete_datasets.html", contextinstance)
-    # Not a valid request method.
-    return HttpResponseRedirect("/sharkdataadmin")
-
-def loadDatasets(request):
-    """ Updates the database from datasets stored in the FTP area.
-        I multiple versions of a dataset are in the FTP area only the latest 
-        will be loaded.
+def updateDatasetsAndResources(request):
+    """ Updates the database from datasets and resources stored in the FTP area.
     """
     error_message = None
     #
     if request.method == "GET":
-        form = forms.LoadAllDatasetsForm()
+        form = forms.UpdateDatasetsAndResourcesForm()
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("load_datasets.html", contextinstance)
+        return render_to_response("update_datasets_and_resources.html", contextinstance)
     elif request.method == "POST":
         #
-        form = forms.LoadAllDatasetsForm(request.POST)
+        form = forms.UpdateDatasetsAndResourcesForm(request.POST)
         if form.is_valid():
             #
             user = request.POST['user']
@@ -418,34 +360,21 @@ def loadDatasets(request):
                 logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all datasets', user=user)
                 try:
                     error_counter = sharkdata_core.DatasetUtils().writeLatestDatasetsInfoToDb(logfile_name, user)
+                    
+                    sharkdata_core.ResourcesUtils().writeResourcesInfoToDb(user)
+                    
                     if error_counter > 0:
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED Errors:' + str(error_counter))
+                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED-' + str(error_counter) + '-errors')
                     else:
                         sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
                 except Exception as e:
-                    error_message = u"Can't load datasets and save to the database."
+                    error_message = u"Can't load datasets/resources and save to the database."
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                         
                         
                     if settings.DEBUG: print('\nError: ' + error_message + '\nException: ' + str(e) + '\n')
                     settings.LOGGER.error('\nError: ' + error_message + '\nException: ' + str(e) + '\n')                    
-            # Delete old versions of dataset files.
-            if error_message == None:
-                if ('delete_old_ftp_versions' in request.POST) and (request.POST['delete_old_ftp_versions'] == 'on'):
-                    try:
-                        error_counter = sharkdata_core.DatasetUtils().deleteOldFtpVersions(logfile_name, user)
-                        if error_counter > 0:
-                            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED Errors:' + str(error_counter))
-                        else:
-                            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                    except Exception as e:
-                        error_message = u"Can't delete old versions in the FTP area."
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        if settings.DEBUG: 
-                            print('\nError: ' + error_message + '\nException: ' + str(e) + '\n')
-                            settings.LOGGER.error('\nError: ' + error_message + '\nException: ' + str(e) + '\n')                    
             # OK.
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
@@ -453,109 +382,7 @@ def loadDatasets(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("load_datasets.html", contextinstance)
-    # Not a valid request method.
-    return HttpResponseRedirect("/sharkdataadmin")
-
-##### Resources. #####
-
-def deleteResources(request):
-    """ Deletes all rows in the database. The FTP area is not affected. """
-    error_message = None
-    #
-    if request.method == "GET":
-        #
-        form = forms.DeleteAllResourcesForm()
-        contextinstance = {'form'   : form,
-                           'error_message' : error_message}
-        contextinstance.update(csrf(request))
-        return render_to_response("delete_resources.html", contextinstance)
-    elif request.method == "POST":
-        # Reloads db-stored data.
-        sharkdata_core.ResourcesUtils().clear()
-        #
-        form = forms.DeleteAllResourcesForm(request.POST)
-        if form.is_valid():
-            #
-            user = request.POST['user']
-            password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
-                error_message = 'Not a valid user or password. Please try again...'   
-            #
-            if error_message == None:
-                if ('delete_ftp' in request.POST) and (request.POST['delete_ftp'] == 'on'):
-                    logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all resources from FTP area', user=user)
-                    try:
-                        sharkdata_core.ResourcesUtils().deleteAllFilesFromFtp()
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                    except:
-                        error_message = u"Can't delete resources from the database."
-                        sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-            #
-            if error_message == None:
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete all resources', user=user)
-                try:
-                    resources_models.Resources.objects.all().delete()
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                except:
-                    error_message = u"Can't delete resources from the database."
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-            #
-            if error_message == None:
-                return HttpResponseRedirect("/sharkdataadmin")
-        #
-        contextinstance = {'form'   : form,
-                           'error_message' : error_message}
-        contextinstance.update(csrf(request))
-        return render_to_response("delete_resources.html", contextinstance)
-    # Not a valid request method.
-    return HttpResponseRedirect("/sharkdataadmin")
-
-def loadResources(request):
-    """ Updates the database from resources stored in the FTP area.
-    """
-    error_message = None
-    #
-    if request.method == "GET":
-        form = forms.LoadAllResourcesForm()
-        contextinstance = {'form': form,
-                           'error_message': error_message}
-        contextinstance.update(csrf(request))
-        return render_to_response("load_resources.html", contextinstance)
-    elif request.method == "POST":
-        # Reloads db-stored data.
-        sharkdata_core.ResourcesUtils().clear()
-        #
-        form = forms.LoadAllResourcesForm(request.POST)
-        if form.is_valid():
-            #
-            user = request.POST['user']
-            password = request.POST['password']
-            if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
-                error_message = 'Not a valid user or password. Please try again...'   
-            #
-            if error_message == None:
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all resources', user=user)
-                try:
-                    sharkdata_core.ResourcesUtils().writeResourcesInfoToDb(user)
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                except Exception as e:
-                    error_message = u"Can't load resources and save to the database."
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-            # 
-            if error_message == None:
-                return HttpResponseRedirect("/sharkdataadmin")
-        #
-        contextinstance = {'form': form,
-                           'error_message': error_message}
-        contextinstance.update(csrf(request))
-        return render_to_response("load_resources.html", contextinstance)
+        return render_to_response("update_datasets_and_resources.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 

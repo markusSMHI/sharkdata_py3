@@ -151,13 +151,13 @@ class DatasetUtils(object):
             destination.close()
         return None # No error message.
 
-    def deleteFileFromFtp(self, file_name):
-        """ Delete one version of the dataset from the FTP area. """
-        file_path = pathlib.Path(self._data_in_datasets, file_name)
-        # Delete the file.
-        file_path.unlink() # Removes file.
-        #
-        return None # No error message.
+#     def deleteFileFromFtp(self, file_name):
+#         """ Delete one version of the dataset from the FTP area. """
+#         file_path = pathlib.Path(self._data_in_datasets, file_name)
+#         # Delete the file.
+#         file_path.unlink() # Removes file.
+#         #
+#         return None # No error message.
 
     def deleteAllFilesFromFtp(self):
         """ Delete all datasets from FTP area. """

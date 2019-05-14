@@ -10,13 +10,7 @@ import app_sharkdataadmin.views
 urlpatterns = [
     url(r'^$', app_sharkdataadmin.views.sharkDataAdmin),
     #
-    url(r'^delete_datasets/', app_sharkdataadmin.views.deleteDatasets),
-    url(r'^load_datasets/', app_sharkdataadmin.views.loadDatasets),
-    #
-    url(r'^delete_resources/', app_sharkdataadmin.views.deleteResources),
-    url(r'^load_resources/', app_sharkdataadmin.views.loadResources),
-    #
-#     url(r'^generate_archives/', app_sharkdataadmin.views.generateArchives),
+    url(r'^update_datasets_and_resources/', app_sharkdataadmin.views.updateDatasetsAndResources),
     #
     url(r'^delete_dwca_exportfiles/', app_sharkdataadmin.views.deleteDwcaExportFiles),
     url(r'^generate_dwca_exportfiles/', app_sharkdataadmin.views.generateDwcaExportFiles),

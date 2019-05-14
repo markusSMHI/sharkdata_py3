@@ -98,13 +98,13 @@ class ResourcesUtils(object):
         finally:
             destination.close()
 
-    def deleteFileFromFtp(self, file_name):
-        """ Delete one resource from the FTP area. """
-        self.clear()
-        #
-        file_path = pathlib.Path(self._data_in_resources, file_name)
-        # Delete the file.
-        file_path.unlink()
+#     def deleteFileFromFtp(self, file_name):
+#         """ Delete one resource from the FTP area. """
+#         self.clear()
+#         #
+#         file_path = pathlib.Path(self._data_in_resources, file_name)
+#         # Delete the file.
+#         file_path.unlink()
 
     def deleteAllFilesFromFtp(self):
         """ Delete all resources from FTP area. """

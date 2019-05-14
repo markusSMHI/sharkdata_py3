@@ -113,6 +113,33 @@ class SharkdataAdminUtils(object):
     
     # TODO: Not in thread yet.
     
+    def loadAllDatasetsInThread(self, datatype_list, year_from, year_to, status, user):
+        """ """
+        logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all datasets', user=user)
+        try:
+            # Check if thread is running.
+            if self._generate_dwca_thread:
+                if self._generate_dwca_thread.is_alive():
+                    error_message = 'Load all datasets is already running. Please try again later.'
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+                    #
+                    return
+            # Use a thread to relese the user. Log file closed in thread.
+            self._generate_dwca_thread = threading.Thread(target = sharkdata_core.GenerateDwcaExportFiles().generateDwcaExportFiles, 
+                                                              args=(logfile_name, datatype_list, year_from, year_to, status, user ))
+            self._generate_dwca_thread.start()
+        except Exception as e:
+            error_message = 'Can\'t load all datasets.' + '\nException: ' + str(e) + '\n'
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+        #
+        return None # No error message.
+                 
+    ##### Resources #####
+    
+    # TODO: Not in thread yet.
+    
     ##### Archives #####
     
 #     def generateArchivesForAllDatasetsInThread(self, user):
@@ -123,7 +150,7 @@ class SharkdataAdminUtils(object):
 #             # Check if generate_archives thread is running.
 #             if self._generate_archives_thread:
 #                 if self._generate_archives_thread.is_alive():
-#                     error_message = u"Generate archives is already running. Please try again later."
+#                     error_message = 'Generate archives is already running. Please try again later.'
 #                     admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
 #                     admin_models.addResultLog(logrow_id, result_log = error_message)
 #                     #
@@ -132,7 +159,7 @@ class SharkdataAdminUtils(object):
 #             self._generate_archives_thread = threading.Thread(target = self.generateArchivesForAllDatasets, args=(logrow_id, user, ))
 #             self._generate_archives_thread.start()
 #         except:
-#             error_message = u"Can't generate_archives."
+#             error_message = 'Can't generate_archives.'
 #             admin_models.changeLogRowStatus(logrow_id, status = 'FAILED')
 #             admin_models.addResultLog(logrow_id, result_log = error_message)
 #         #
@@ -149,15 +176,15 @@ class SharkdataAdminUtils(object):
         # Check if update thread is running.
         if self._update_obs_thread:
             if self._update_obs_thread.is_alive():
-                return u"Update is already running. Please try again later."
+                return 'Update is already running. Please try again later.'
         # Check if load thread is running.
         if self._load_obs_thread:
             if self._load_obs_thread.is_alive():
-                return u"Load is already running. Please try again later."              
+                return 'Load is already running. Please try again later.'              
         # Check if clean up thread is running.
         if self._cleanup_obs_thread:
             if self._cleanup_obs_thread.is_alive():
-                return u"Clean up is already running. Please try again later."              
+                return 'Clean up is already running. Please try again later.'              
         # Use a thread to relese the user. This task will take some time.
         self._update_obs_thread = threading.Thread(target = sharkdata_core.SpeciesObsUtils().updateSpeciesObs, args=(log_row_id,))
         self._update_obs_thread.start()
@@ -169,15 +196,15 @@ class SharkdataAdminUtils(object):
         # Check if update thread is running.
         if self._update_obs_thread:
             if self._update_obs_thread.is_alive():
-                return u"Update is already running. Please try again later."
+                return 'Update is already running. Please try again later.'
         # Check if load thread is running.
         if self._load_obs_thread:
             if self._load_obs_thread.is_alive():
-                return u"Load is already running. Please try again later."              
+                return 'Load is already running. Please try again later.'
         # Check if clean up thread is running.
         if self._cleanup_obs_thread:
             if self._cleanup_obs_thread.is_alive():
-                return u"Clean up is already running. Please try again later."              
+                return 'Clean up is already running. Please try again later.'
         # Use a thread to relese the user. This task will take some time.
         self._cleanup_obs_thread = threading.Thread(target = sharkdata_core.SpeciesObsUtils().cleanUpSpeciesObs, args=(log_row_id,))
         self._cleanup_obs_thread.start()
@@ -193,7 +220,7 @@ class SharkdataAdminUtils(object):
             # Check if thread is running.
             if self._generate_ices_xml_thread:
                 if self._generate_ices_xml_thread.is_alive():
-                    error_message = u"Generate ICES-XML files is already running. Please try again later."
+                    error_message = 'Generate ICES-XML files is already running. Please try again later.'
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
@@ -203,7 +230,7 @@ class SharkdataAdminUtils(object):
                                                               args=(logfile_name, datatype_list, year_from, year_to, monitoring_type, user ))
             self._generate_ices_xml_thread.start()
         except Exception as e:
-            error_message = u"Can't generate ICES-XML file." + '\nException: ' + str(e) + '\n'
+            error_message = 'Can\'t generate ICES-XML file.' + '\nException: ' + str(e) + '\n'
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
         #
@@ -216,7 +243,7 @@ class SharkdataAdminUtils(object):
             # Check if thread is running.
             if self._validate_ices_xml_thread:
                 if self._validate_ices_xml_thread.is_alive():
-                    error_message = u"Validate ICES-XML file is already running. Please try again later."
+                    error_message = 'Validate ICES-XML file is already running. Please try again later.'
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
@@ -226,7 +253,7 @@ class SharkdataAdminUtils(object):
                                                               args=(logfile_name, datatype_list, user ))
             self._validate_ices_xml_thread.start()
         except Exception as e:
-            error_message = u"Can't validate ICES-XML file." + '\nException: ' + str(e) + '\n'
+            error_message = 'Can\'t validate ICES-XML file.' + '\nException: ' + str(e) + '\n'
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
         #
@@ -248,7 +275,7 @@ class SharkdataAdminUtils(object):
 #             # Check if thread is running.
 #             if self._validate_ices_xml_thread:
 #                 if self._validate_ices_xml_thread.is_alive():
-#                     error_message = u"Validate ICES-XML file is already running. Please try again later."
+#                     error_message = 'Validate ICES-XML file is already running. Please try again later.'
 #                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
 #                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
 #                     #
@@ -258,7 +285,7 @@ class SharkdataAdminUtils(object):
 #                                                               args=(logfile_name, datatype_list, user ))
 #             self._validate_ices_xml_thread.start()
 #         except Exception as e:
-#             error_message = u"Can't validate ICES-XML file." + '\nException: ' + str(e) + '\n'
+#             error_message = 'Can\'t validate ICES-XML file.' + '\nException: ' + str(e) + '\n'
 #             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
 #             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
 #         #
@@ -273,7 +300,7 @@ class SharkdataAdminUtils(object):
             # Check if thread is running.
             if self._generate_dwca_thread:
                 if self._generate_dwca_thread.is_alive():
-                    error_message = u"Generate DwC-A files is already running. Please try again later."
+                    error_message = 'Generate DwC-A files is already running. Please try again later.'
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
@@ -283,7 +310,7 @@ class SharkdataAdminUtils(object):
                                                               args=(logfile_name, datatype_list, year_from, year_to, status, user ))
             self._generate_dwca_thread.start()
         except Exception as e:
-            error_message = u"Can't generate DwC-A files." + '\nException: ' + str(e) + '\n'
+            error_message = 'Can\'t generate DwC-A files.' + '\nException: ' + str(e) + '\n'
             sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
             sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
         #
