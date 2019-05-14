@@ -6,7 +6,7 @@
 
 import pathlib
 import datetime
-# import json
+
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template.context_processors import csrf
 from django.shortcuts import render_to_response
@@ -14,9 +14,6 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 
 from app_sharkdataadmin import forms
-# import app_sharkdataadmin.models as admin_models
-import app_datasets.models as datasets_models
-import app_resources.models as resources_models
 import app_exportformats.models as exportformats_models
 import sharkdata_core
 
@@ -96,11 +93,6 @@ def generateDwcaExportFiles(request):
                 datatype_list.append('Zoobenthos')
             if ('zooplankton' in request.POST) and (request.POST['zooplankton'] == 'on'):
                 datatype_list.append('Zooplankton')
-            #
-# #             if ('Phytobenthos' in datatype_list) or \
-#             if ('Phytoplankton' in datatype_list) or \
-#                ('Zooplankton' in datatype_list):
-#                 error_message = 'Support for Zoobenthos only, others are under development. Please try again...'   
             #
             if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
                 error_message = 'Not a valid user or password. Please try again...'   
@@ -283,7 +275,6 @@ def sharkDataAdmin(request):
     log_file_list = log_file_list[0:per_page]
     
     for log_file in sorted(log_file_list, reverse=True):
-        print('DEBUG: ', log_file)
         
         log_file_path = pathlib.Path(log_file)
         stem = log_file_path.stem
@@ -303,20 +294,6 @@ def sharkDataAdmin(request):
         logrow['file_stem'] = stem
         
         logrows.append(logrow)
-        
-        print('DEBUG2: ', logrows)
-
-#                 {% for logrow in logrows %}
-#                     <tr>
-#                         <td>{{ logrow.command_name }}</td>
-#                         <td>{{ logrow.status }}</td>
-#                         <td>{{ logrow.started_datetime | date:'Y-m-d H:i:s' }}</td>
-#                         <td><a class="btn btn-primary btn-xs" href="/sharkdataadmin/view_log/{{ logrow.id }}">View result</a></td>
-#                     </tr>
-#                 {% endfor %}
-
-
-    #logrows = []
     #
     return render_to_response("sharkdata_admin.html",
                               {'logrows' : logrows})
@@ -357,24 +334,7 @@ def updateDatasetsAndResources(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             # Load datasets.
             if error_message == None:
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Load all datasets', user=user)
-                try:
-                    error_counter = sharkdata_core.DatasetUtils().writeLatestDatasetsInfoToDb(logfile_name, user)
-                    
-                    sharkdata_core.ResourcesUtils().writeResourcesInfoToDb(user)
-                    
-                    if error_counter > 0:
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED-' + str(error_counter) + '-errors')
-                    else:
-                        sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                except Exception as e:
-                    error_message = u"Can't load datasets/resources and save to the database."
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
-                        
-                        
-                    if settings.DEBUG: print('\nError: ' + error_message + '\nException: ' + str(e) + '\n')
-                    settings.LOGGER.error('\nError: ' + error_message + '\nException: ' + str(e) + '\n')                    
+                sharkdata_core.SharkdataAdminUtils().updateDatasetsAndResourcesInThread(user)
             # OK.
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
@@ -471,39 +431,3 @@ def cleanUpSpeciesObs(request):
     return HttpResponseRedirect("/sharkdataadmin")
 
 
-##### DarwinCore-Archive for each dataset. #####
-
-# def generateArchives(request):
-#     """ Generates archive files (DwC-A) for all datasets.
-#     """
-#     error_message = None
-#     #
-#     if request.method == "GET":
-#         form = forms.GenerateArchivesForm()
-#         contextinstance = {'form'   : form,
-#                            'error_message' : error_message}
-#         contextinstance.update(csrf(request))
-#         return render_to_response("generate_archives.html", contextinstance)
-#     elif request.method == "POST":
-#         #
-#         form = forms.GenerateArchivesForm(request.POST)
-#         if form.is_valid():
-#             #
-#             user = request.POST['user']
-#             password = request.POST['password']
-#             if password != settings.APPS_VALID_USERS_AND_PASSWORDS.get(user, None):
-#                 error_message = 'Not a valid user or password. Please try again...'   
-#             #
-#             if error_message == None:
-#                     sharkdata_core.SharkdataAdminUtils().generateArchivesForAllDatasetsInThread(user)
-#             # OK.
-#             if error_message == None:
-#                 return HttpResponseRedirect("/sharkdataadmin")
-#         #
-#         contextinstance = {'form'   : form,
-#                            'error_message' : error_message}
-#         contextinstance.update(csrf(request))
-#         return render_to_response("generate_archives.html", contextinstance)
-#     # Not a valid request method.
-#     return HttpResponseRedirect("/sharkdataadmin")
-    

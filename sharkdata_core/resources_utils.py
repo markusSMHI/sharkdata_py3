@@ -115,45 +115,60 @@ class ResourcesUtils(object):
             if file_path.isfile():
                 file_path.unlink()
 
-    def writeResourcesInfoToDb(self, user = ''):
+    def writeResourcesInfoToDb(self, logfile_name, user = ''):
         """ Updates the database from datasets stored in the FTP area.
             I multiple versions of a dataset are in the FTP area only the latest 
             will be loaded.
         """
         self.clear()
+        error_counter = 0
         # Remove all db rows. 
         models.Resources.objects.all().delete()
         # Get resources from FTP archive.
         for file_name in self.getResourceFiles():
-            self.writeFileInfoToDb(file_name, user)
-
+            if logfile_name:
+                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Loading file: ' + file_name + '...')
+            try:
+                error_string = self.writeFileInfoToDb(file_name, user)
+                if error_string:
+                    error_counter += 1 
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + error_string)
+            except Exception as e:
+                error_counter += 1 
+                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + str(e))
+        #
+        return error_counter
+    
     def writeFileInfoToDb(self, file_name, user = ''):
         """ Extracts info from the resource file name and add to database. """
-        #
-        self.clear()
-        #
-        ftp_file_path = pathlib.Path(self._data_in_resources, file_name)
-        # Extract info from file name.
-        resource_name, resource_type, encoding = self.splitFilename(file_name)
-        #
         try:
-            resource_file = codecs.open(ftp_file_path, 'r', encoding = encoding)
-            resource_content = resource_file.read()
-            resource_file.close()
-        except:
-            resource_content = 'ERROR'
-        
-        # Save to db.
-        resources = models.Resources(
-                      resource_name = resource_name,
-                      resource_type = resource_type,
-                      encoding = encoding,
-                      resource_file_name = file_name,
-                      ftp_file_path = ftp_file_path,
-                      file_content = resource_content,
-                      uploaded_by = user
-                      )
-        resources.save()
+            self.clear()
+            #
+            ftp_file_path = pathlib.Path(self._data_in_resources, file_name)
+            # Extract info from file name.
+            resource_name, resource_type, encoding = self.splitFilename(file_name)
+            #
+            try:
+                resource_file = codecs.open(ftp_file_path, 'r', encoding = encoding)
+                resource_content = resource_file.read()
+                resource_file.close()
+            except:
+                resource_content = 'ERROR'
+            
+            # Save to db.
+            resources = models.Resources(
+                          resource_name = resource_name,
+                          resource_type = resource_type,
+                          encoding = encoding,
+                          resource_file_name = file_name,
+                          ftp_file_path = ftp_file_path,
+                          file_content = resource_content,
+                          uploaded_by = user
+                          )
+            resources.save()
+        except Exception as e:
+            return str(e)                
+
 
     def getResourceFiles(self):
         """ Read filenames from FTP area. """
@@ -161,7 +176,7 @@ class ResourcesUtils(object):
         for file_name in self._data_in_resources.glob('*'):
             file_path = pathlib.Path(self._data_in_resources, file_name)
             if file_path.is_file():
-                resource_files.append(file_name)
+                resource_files.append(str(file_name))
         #
         return resource_files
 
