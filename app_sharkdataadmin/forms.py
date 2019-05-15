@@ -56,7 +56,7 @@ class GenerateIcesXmlExportFilesForm(forms.Form):
         ('Test', 'Test'),
         )
     #
-    phytobenthos = forms.BooleanField(label='Phytobenthos', required = False, initial = False)
+    phytobenthos = forms.BooleanField(label='Phytobenthos', required = False, initial = True)
     phytoplankton = forms.BooleanField(label='Phytoplankton', required = False, initial = True)
     zoobenthos = forms.BooleanField(label='Zoobenthos', required = False, initial = True)
     zooplankton = forms.BooleanField(label='Zooplankton', required = False, initial = True)

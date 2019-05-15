@@ -4,9 +4,9 @@
 # Copyright (c) 2013-2016 SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
-import os
+# import os
+# import pathlib
 
-import pathlib
 import urllib
 import json
 import traceback
@@ -23,7 +23,7 @@ class ValidateIcesXml(object):
     
     def __init__(self):
         """ """
-        self._export_dir_path = os.path.join(settings.APP_DATASETS_FTP_PATH, 'exports')
+#         self._export_dir_path = os.path.join(settings.APP_DATASETS_FTP_PATH, 'exports')
     
     def validateIcesXml(self, logfile_name, datatype_list, user):
         """ """
@@ -52,6 +52,8 @@ class ValidateIcesXml(object):
         Status = Test          --> Status = Test-DATSU-failed --> Approved = False
         """
         try:
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Processing ICES-XML file: ' + db_export.export_file_name)
+            
             # Status 'Checked by DC'.
             if (db_export.status == 'Checked by DC'):
                 # Don't perform DATSU check.
@@ -61,18 +63,16 @@ class ValidateIcesXml(object):
             
             # Status 'Not checked'.
             elif (db_export.status == 'Not checked'):
+                
 #                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/test,sharkdata,se!exportformats!'
-
-
-
-
 #                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/sharkdata,se!exportformats!'
 
+
+
+                # Test server: django.mellifica.org
                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/django,mellifica,org!exportformats!' # TODO: For test only...
-
-
-
                 
+
                 
                 url_part_2 = db_export.export_file_name.replace('.', ',')
                 url_part_3 = '/shark!smhi,se' # TODO: shark@smhi.se
@@ -87,11 +87,21 @@ class ValidateIcesXml(object):
                     url_part_4 = '/zp' 
                 #
                 if settings.DEBUG: print(url_part_1 + url_part_2 + url_part_3 + url_part_4)
+                
+                sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='- DEBUG: ' + url_part_1 + url_part_2 + url_part_3 + url_part_4)
+
                 #
+                datsu_response = {}
+                
+                # Call DATSU.
                 datsu_response_json = urllib.request.urlopen(url_part_1 + url_part_2 + url_part_3 + url_part_4)
                 datsu_response = json.load(datsu_response_json)
-#                 # For test:
-#                 datsu_response = dict({u'SessionID': u'484', u'NumberOfErrors': -1, u'ScreenResultURL': u'datsu.ices.dk/test/ScreenResult.aspx?groupError=0&sessionid=484'})            
+
+                # For test:
+#                 datsu_response = dict({u'SessionID': u'484', 
+#                                        u'NumberOfErrors': -1, 
+#                                        u'ScreenResultURL': u'datsu.ices.dk/test/ScreenResult.aspx?groupError=0&sessionid=484'})
+
                 #
                 if settings.DEBUG: print('DEBUG: \n' + json.dumps(datsu_response, sort_keys = True, indent = 2))
                 #
