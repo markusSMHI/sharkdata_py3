@@ -64,8 +64,13 @@ class ValidateIcesXml(object):
 #                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/test,sharkdata,se!exportformats!'
 
 
+
+
 #                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/sharkdata,se!exportformats!'
-                url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/django,mellifica,org!exportformats!'
+
+                url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/django,mellifica,org!exportformats!' # TODO: For test only...
+
+
 
                 
                 
