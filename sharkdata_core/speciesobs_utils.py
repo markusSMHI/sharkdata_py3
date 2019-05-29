@@ -132,10 +132,10 @@ class SpeciesObsUtils(object):
             
             # Loop over all datasets.
             valid_datatypes = [
-#                                 'Epibenthos', 
+                                'Epibenthos', 
                                 'GreySeal', 
                                 'HarbourSeal', 
-#                                 'Phytoplankton', 
+                                'Phytoplankton', 
                                 'RingedSeal',
                                 'Zoobenthos', 
                                 'Zooplankton', 
