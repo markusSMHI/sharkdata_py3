@@ -88,11 +88,19 @@ def IcesXml(request, export_name):
     export_file_name  = exportfile.export_file_name
     export_file_path  = exportfile.export_file_path
     #
-    export_file = codecs.open(export_file_path, 'r', encoding = 'cp1252')
-    file_content = export_file.read()
-    export_file.close()
+    file_content = ''
+    try:
+        export_file = codecs.open(export_file_path, 'r', encoding = 'cp1252')
+        file_content = export_file.read()
+        export_file.close()
+    except:
+        pass
     #
-    response = HttpResponse(content_type = 'application/xml; charset=cp1252')    
+    if '.xml' in export_file_name:
+        response = HttpResponse(content_type = 'application/xml; charset=cp1252')
+    else:    
+        response = HttpResponse(content_type = 'text/plain; charset=cp1252')
+        
     response['Content-Disposition'] = 'attachment; filename=' + export_file_name    
     response.write(file_content)
     return response
@@ -104,9 +112,13 @@ def IcesXmlLog(request, export_name):
 #     error_log_file  = exportfile.error_log_file
     error_log_file_path  = exportfile.error_log_file_path
     #
-    log_file = codecs.open(error_log_file_path, 'r', encoding = 'cp1252')
-    file_content = log_file.read()
-    log_file.close()
+    file_content = '<Log file not available.>'
+    try:
+        log_file = codecs.open(error_log_file_path, 'r', encoding = 'cp1252')
+        file_content = log_file.read()
+        log_file.close()
+    except:
+        pass
     #
     response = HttpResponse(content_type = 'text/plain; charset=cp1252')    
 #     response['Content-Disposition'] = 'attachment; filename=' + error_log_file    

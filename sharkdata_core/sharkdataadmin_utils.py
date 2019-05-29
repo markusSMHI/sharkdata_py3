@@ -19,15 +19,11 @@ class SharkdataAdminUtils(object):
     def __init__(self):
         """ """
         self._update_thread = None
-        self._metadata_update_thread = None
-        self._generate_archives_thread = None
-        self._update_obs_thread = None
-        self._cleanup_obs_thread = None
-        self._load_obs_thread = None
-        self._update_obs_thread = None
         self._generate_ices_xml_thread = None
         self._validate_ices_xml_thread = None
         self._generate_dwca_thread = None
+        self._generate_obs_thread = None
+        self._delete_obs_thread = None
         # Path to log files for threaded work.
         self._logfile_dir_path = pathlib.Path(settings.SHARKDATA_DATA, 'admin_log')
     
@@ -38,12 +34,12 @@ class SharkdataAdminUtils(object):
         starttime = str(datetime.datetime.now()).replace(':', '')[:17]
         logfile_name = starttime + '_' + command + '_RUNNING.txt' 
         logfile_name = logfile_name.replace(' ', '_')
-        self._logfile_path = pathlib.Path(self._logfile_dir_path, logfile_name)
+        logfile_path = pathlib.Path(self._logfile_dir_path, logfile_name)
         
-        if not self._logfile_path.parent.exists():
-            self._logfile_path.parent.mkdir(parents=True)
+        if not logfile_path.parent.exists():
+            logfile_path.parent.mkdir(parents=True)
         
-        with self._logfile_path.open('w') as logfile:
+        with logfile_path.open('w') as logfile:
             logfile.write('\n')
             logfile.write('command: ' + command + '\n')
             logfile.write('started_at: ' + starttime + '\n')
@@ -54,17 +50,17 @@ class SharkdataAdminUtils(object):
     
     def log_write(self, logfile_name, log_row):
         """ """
-        self._logfile_path = pathlib.Path(self._logfile_dir_path, logfile_name)
-        if self._logfile_path.exists():
-            with self._logfile_path.open('a') as logfile:
+        logfile_path = pathlib.Path(self._logfile_dir_path, logfile_name)
+        if logfile_path.exists():
+            with logfile_path.open('a') as logfile:
                 logfile.write(log_row + '\n')
     
     def log_close(self, logfile_name, new_status):
         """ """
-        self._logfile_path = pathlib.Path(self._logfile_dir_path, logfile_name)
+        logfile_path = pathlib.Path(self._logfile_dir_path, logfile_name)
         endtime = str(datetime.datetime.now()).replace(':', '').replace(' ', '_')[:17]
-        if self._logfile_path.exists():
-            with self._logfile_path.open('a') as logfile:
+        if logfile_path.exists():
+            with logfile_path.open('a') as logfile:
                 logfile.write('\n')
                 logfile.write('status: ' + new_status + '\n')
                 logfile.write('finished_at: ' + endtime + '\n')
@@ -72,7 +68,7 @@ class SharkdataAdminUtils(object):
         
             new_file_name = logfile_name.replace('_RUNNING', '_' + new_status.upper())
             new_path = pathlib.Path(self._logfile_dir_path, new_file_name)
-            self._logfile_path.rename(new_path)
+            logfile_path.rename(new_path)
     
     def get_log_files(self):
         """ """
@@ -125,7 +121,7 @@ class SharkdataAdminUtils(object):
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
-                    return
+                    return error_message
             # Use a thread to relese the user. Log file closed in thread.
             
             self._update_thread = threading.Thread(target = self.updateDatasetsAndResources, 
@@ -173,7 +169,7 @@ class SharkdataAdminUtils(object):
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
-                    return
+                    return error_message
             # Use a thread to relese the user. Log file closed in thread.
             self._generate_ices_xml_thread = threading.Thread(target = sharkdata_core.GenerateIcesXmlExportFiles().generateIcesXmlExportFiles, 
                                                               args=(logfile_name, datatype_list, year_from, year_to, monitoring_type, user ))
@@ -196,7 +192,7 @@ class SharkdataAdminUtils(object):
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
-                    return
+                    return error_message
             # Use a thread to relese the user. Log file closed in thread.
             self._validate_ices_xml_thread = threading.Thread(target = sharkdata_core.ValidateIcesXml().validateIcesXml, 
                                                               args=(logfile_name, datatype_list, user ))
@@ -228,7 +224,7 @@ class SharkdataAdminUtils(object):
                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
                     sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
                     #
-                    return
+                    return error_message
             # Use a thread to relese the user. Log file closed in thread.
             self._generate_dwca_thread = threading.Thread(target = sharkdata_core.GenerateDwcaExportFiles().generateDwcaExportFiles, 
                                                               args=(logfile_name, datatype_list, year_from, year_to, status, user ))
@@ -242,43 +238,48 @@ class SharkdataAdminUtils(object):
                  
     ##### SpeciesObs #####
     
-    def updateSpeciesObsInThread(self, log_row_id):
+    def generateSpeciesObsInThread(self, user):
         """ """
-        # Check if update thread is running.
-        if self._update_obs_thread:
-            if self._update_obs_thread.is_alive():
-                return '"Update species obs." is already running. Please try again later.'
-        # Check if load thread is running.
-        if self._load_obs_thread:
-            if self._load_obs_thread.is_alive():
-                return '"Load species obs." is already running. Please try again later.'              
-        # Check if clean up thread is running.
-        if self._cleanup_obs_thread:
-            if self._cleanup_obs_thread.is_alive():
-                return '"Clean up species obs." is already running. Please try again later.'              
-        # Use a thread to relese the user. This task will take some time.
-        self._update_obs_thread = threading.Thread(target = sharkdata_core.SpeciesObsUtils().updateSpeciesObs, args=(log_row_id,))
-        self._update_obs_thread.start()
+        logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Generate species observations', user=user)
+        try:
+            # Check if thread is running.
+            if self._generate_obs_thread:
+                if self._generate_obs_thread.is_alive():
+                    error_message = '"Generate species observations" is already running. Please try again later.'
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+                    #
+                    return error_message
+            # Use a thread to relese the user. Log file closed in thread.
+            self._generate_obs_thread = threading.Thread(target = sharkdata_core.SpeciesObsUtils().generateSpeciesObs, 
+                                                              args=(logfile_name, user, ))
+            self._generate_obs_thread.start()
+        except Exception as e:
+            error_message = 'Can\'t generate species observations.' + '\nException: ' + str(e) + '\n'
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
         #
         return None # No error message.
-         
-    def cleanUpSpeciesObsInThread(self, log_row_id):
+             
+    def deleteSpeciesObsInThread(self, user):
         """ """
-        # Check if update thread is running.
-        if self._update_obs_thread:
-            if self._update_obs_thread.is_alive():
-                return '"Update species obs." is already running. Please try again later.'
-        # Check if load thread is running.
-        if self._load_obs_thread:
-            if self._load_obs_thread.is_alive():
-                return '"Load species obs." is already running. Please try again later.'
-        # Check if clean up thread is running.
-        if self._cleanup_obs_thread:
-            if self._cleanup_obs_thread.is_alive():
-                return '"Clean up species obs." is already running. Please try again later.'
-        # Use a thread to relese the user. This task will take some time.
-        self._cleanup_obs_thread = threading.Thread(target = sharkdata_core.SpeciesObsUtils().cleanUpSpeciesObs, args=(log_row_id,))
-        self._cleanup_obs_thread.start()
-
+        logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Delete species observations', user=user)
+        try:
+            # Check if thread is running.
+            if self._delete_obs_thread:
+                if self._delete_obs_thread.is_alive():
+                    error_message = '"Delete species observations" is already running. Please try again later.'
+                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+                    #
+                    return error_message
+            # Use a thread to relese the user. Log file closed in thread.
+            self._delete_obs_thread = threading.Thread(target = sharkdata_core.SpeciesObsUtils().deleteSpeciesObs, 
+                                                              args=(logfile_name, user, ))
+            self._delete_obs_thread.start()
+        except Exception as e:
+            error_message = 'Can\'t delete species observations.' + '\nException: ' + str(e) + '\n'
+            sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
+            sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+        #
         return None # No error message.
-

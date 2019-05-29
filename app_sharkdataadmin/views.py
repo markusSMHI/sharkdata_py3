@@ -369,15 +369,7 @@ def updateSpeciesObs(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Update species observations', user=user)
-                try:
-                    error_message = sharkdata_core.SharkdataAdminUtils().updateSpeciesObsInThread(logfile_name)
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                except:
-                    error_message = u"Can't update species observations from datasets."
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+                error_message = sharkdata_core.SharkdataAdminUtils().generateSpeciesObsInThread(user)
             # OK.
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
@@ -410,15 +402,7 @@ def cleanUpSpeciesObs(request):
                 error_message = 'Not a valid user or password. Please try again...'   
             #
             if error_message == None:
-                logfile_name = sharkdata_core.SharkdataAdminUtils().log_create(command='Clean up species observations', user=user)
-                try:
-                    error_message = sharkdata_core.SharkdataAdminUtils().cleanUpSpeciesObsInThread(logfile_name)
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='+++++')
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FINISHED')
-                except:
-                    error_message = u"Can't clean up species observations."
-                    sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row=error_message)
-                    sharkdata_core.SharkdataAdminUtils().log_close(logfile_name, new_status='FAILED')
+                    error_message = sharkdata_core.SharkdataAdminUtils().deleteSpeciesObsInThread(user)
             # 
             if error_message == None:
                 return HttpResponseRedirect("/sharkdataadmin")
