@@ -28,7 +28,7 @@ class SpeciesObsUtils(object):
         self._load_obs_thread = None
         self._cleanup_obs_thread = None
         # To avoid duplicates.
-        self.observation_id_lookup = []
+        self.observation_id_lookup = set()
         # Load resource file containing WoRMS info for taxa.
         self.worms_info_object = sharkdata_core.SpeciesWormsInfo()
         self.worms_info_object.loadSpeciesFromResource()
@@ -152,7 +152,7 @@ class SpeciesObsUtils(object):
                 if not export_file_path.parent.exists():
                     export_file_path.parent.mkdir(parents=True)                
                 # To avoid duplicates.
-                self.observation_id_lookup = []
+                self.observation_id_lookup = set()
                 # Counters.
                 self.counter_rows = 0
                 self.counter_duplicates = 0
@@ -161,13 +161,12 @@ class SpeciesObsUtils(object):
                 self.year_max = ''
                 
                 with export_file_path.open('w') as obsfile:
-                    
+                     
                     data_header = self.translateHeaders(self._data_header)
                     obsfile.write('\t'.join(data_header) + '\n')
-#                     obsfile.write('\t'.join(self._data_header) + '\n')
                 
                     for dataset_queryset in datasets_models.Datasets.objects.all().filter(datatype = valid_datatype).order_by('dataset_name'):
-                        self.extract_observations_from_dataset(logfile_name, obsfile, dataset_queryset)
+                            self.extract_observations_from_dataset(logfile_name, obsfile, dataset_queryset)
                         
                 print('')
                 print('Summary for datatype: ', valid_datatype)
@@ -245,13 +244,13 @@ class SpeciesObsUtils(object):
                 else:
                     header = self.cleanUpHeader(header)
                     rowdict = dict(zip(header, row))
-                    
+                     
                     rowdict['data_type'] = dataset_queryset.datatype
-                    
+                     
                     # Scientific name is mandatory.
                     if not rowdict.get('scientific_name', ''):
                         continue
-                    
+                     
                     # Position. Check if position is valid. Skip row if not.
                     lat_dd = rowdict.get('sample_latitude_dd', '').replace(',', '.')
                     long_dd = rowdict.get('sample_longitude_dd', '').replace(',', '.')
@@ -277,13 +276,13 @@ class SpeciesObsUtils(object):
                     #
                     # Calculate DarwinCore Observation Id.
                     generated_occurrence_id = self.calculateDarwinCoreObservationIdAsMD5(rowdict)
-                    
+                      
                     if generated_occurrence_id not in self.observation_id_lookup:
-                        self.observation_id_lookup.append(generated_occurrence_id)                    
-
+                        self.observation_id_lookup.add(generated_occurrence_id)                    
+  
                         # Row id as md5.
                         rowdict['occurrence_id'] = generated_occurrence_id
-
+  
                         # When.
                         tmp_date = rowdict.get('sampling_date', '')
                         if len(tmp_date) >= 10:
@@ -291,28 +290,28 @@ class SpeciesObsUtils(object):
                             rowdict['sampling_year'] = year
                             rowdict['sampling_month'] = tmp_date[5:7]
                             rowdict['sampling_day'] = tmp_date[8:10]
-                            
+                               
                             if (self.year_min == '') or (year < self.year_min):
                                 self.year_min = year
                             if (self.year_max == '') or (year > self.year_max):
                                 self.year_max = year
-                            
+                               
                         if not rowdict.get('sample_min_depth', ''):
                             rowdict['sample_min_depth'] = rowdict.get('water_depth_m', '')
                         if not rowdict.get('sample_max_depth', ''):
                             rowdict['sample_max_depth'] = rowdict.get('water_depth_m', '')
-
-                        
+   
+                           
                         # Classification.    
                         scientificname = rowdict.get('scientific_name', '-') if rowdict.get('scientific_name') else '-'
                         taxon_worms_info = self.worms_info_object.getTaxonInfoDict(scientificname)
                         if taxon_worms_info:
-                            rowdict['taxon_kingdom'] = taxon_worms_info.get('kingdom', '-') if taxon_worms_info.get('kingdom') else '-'
-                            rowdict['taxon_phylum'] = taxon_worms_info.get('phylum', '-') if taxon_worms_info.get('phylum') else '-'
-                            rowdict['taxon_class'] = taxon_worms_info.get('class', '-') if taxon_worms_info.get('class') else '-'
-                            rowdict['taxon_order'] = taxon_worms_info.get('order', '-') if taxon_worms_info.get('order') else '-'
-                            rowdict['taxon_family'] = taxon_worms_info.get('family', '-') if taxon_worms_info.get('family') else '-'
-                            rowdict['taxon_genus'] = taxon_worms_info.get('genus', '-') if taxon_worms_info.get('genus') else '-'
+                            rowdict['taxon_kingdom'] = taxon_worms_info.get('kingdom', '-')
+                            rowdict['taxon_phylum'] = taxon_worms_info.get('phylum', '-')
+                            rowdict['taxon_class'] = taxon_worms_info.get('class', '-')
+                            rowdict['taxon_order'] = taxon_worms_info.get('order', '-')
+                            rowdict['taxon_family'] = taxon_worms_info.get('family', '-')
+                            rowdict['taxon_genus'] = taxon_worms_info.get('genus', '-')
                         else:
                             rowdict['taxon_kingdom'] = '-'
                             rowdict['taxon_phylum'] = '-'
@@ -357,7 +356,7 @@ class SpeciesObsUtils(object):
                     else:
                         #print('- Duplicate md5.')
                         self.counter_duplicates += 1
-                    
+                     
             except Exception as e:
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='- Error in row ' + str(rowindex) + ': ' + str(e))
     
