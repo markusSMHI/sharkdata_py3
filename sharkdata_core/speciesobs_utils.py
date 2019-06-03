@@ -192,7 +192,7 @@ class SpeciesObsUtils(object):
                     years = self.year_min + '-' + self.year_max
                 
                 export_db_row = exportformats_models.ExportFiles(
-                                format = 'Species-obs',
+                                format = 'SpeciesObs',
                                 datatype = valid_datatype,
                                 year = years,
                                 approved = 'True',
@@ -321,32 +321,32 @@ class SpeciesObsUtils(object):
                             rowdict['taxon_family'] = '-'
                             rowdict['taxon_genus'] = '-'
                         #
-#                         if not rowdict.get('orderer', ''):
-#                             rowdict['orderer'] = rowdict.get('orderer_code', '')
-#                         if not rowdict.get('orderer', ''):
-#                             rowdict['orderer'] = rowdict.get('sample_orderer_code', '')
-#                         if not rowdict.get('orderer', ''):
-#                             rowdict['orderer'] = rowdict.get('sample_orderer_name_sv', '')
-#                         if not rowdict.get('orderer', ''):
-#                             rowdict['orderer'] = rowdict.get('sample_orderer_name_en', '')
-#                         if not rowdict.get('reporting_institute', ''):
-#                             rowdict['reporting_institute'] = rowdict.get('reporting_institute_code', '')
-#                         if not rowdict.get('reporting_institute', ''):
-#                             rowdict['reporting_institute'] = rowdict.get('reporting_institute_name_sv', '')
-#                         if not rowdict.get('reporting_institute', ''):
-#                             rowdict['reporting_institute'] = rowdict.get('reporting_institute_name_en', '')
-#                         if not rowdict.get('sampling_laboratory', ''):
-#                             rowdict['sampling_laboratory'] = rowdict.get('sampling_laboratory_code', '')
-#                         if not rowdict.get('sampling_laboratory', ''):
-#                             rowdict['sampling_laboratory'] = rowdict.get('sampling_laboratory_name_sv', '')
-#                         if not rowdict.get('sampling_laboratory', ''):
-#                             rowdict['sampling_laboratory'] = rowdict.get('sampling_laboratory_name_en', '')
-#                         if not rowdict.get('analytical_laboratory', ''):
-#                             rowdict['analytical_laboratory'] = rowdict.get('analytical_laboratory_code', '')
-#                         if not rowdict.get('analytical_laboratory', ''):
-#                             rowdict['analytical_laboratory'] = rowdict.get('analytical_laboratory_name_sv', '')
-#                         if not rowdict.get('analytical_laboratory', ''):
-#                             rowdict['analytical_laboratory'] = rowdict.get('analytical_laboratory_name_en', '')
+                        if not rowdict.get('orderer', ''):
+                            rowdict['orderer'] = rowdict.get('orderer_code', '')
+                        if not rowdict.get('orderer', ''):
+                            rowdict['orderer'] = rowdict.get('sample_orderer_code', '')
+                        if not rowdict.get('orderer', ''):
+                            rowdict['orderer'] = rowdict.get('sample_orderer_name_sv', '')
+                        if not rowdict.get('orderer', ''):
+                            rowdict['orderer'] = rowdict.get('sample_orderer_name_en', '')
+                        if not rowdict.get('reporting_institute', ''):
+                            rowdict['reporting_institute'] = rowdict.get('reporting_institute_code', '')
+                        if not rowdict.get('reporting_institute', ''):
+                            rowdict['reporting_institute'] = rowdict.get('reporting_institute_name_sv', '')
+                        if not rowdict.get('reporting_institute', ''):
+                            rowdict['reporting_institute'] = rowdict.get('reporting_institute_name_en', '')
+                        if not rowdict.get('sampling_laboratory', ''):
+                            rowdict['sampling_laboratory'] = rowdict.get('sampling_laboratory_code', '')
+                        if not rowdict.get('sampling_laboratory', ''):
+                            rowdict['sampling_laboratory'] = rowdict.get('sampling_laboratory_name_sv', '')
+                        if not rowdict.get('sampling_laboratory', ''):
+                            rowdict['sampling_laboratory'] = rowdict.get('sampling_laboratory_name_en', '')
+                        if not rowdict.get('analytical_laboratory', ''):
+                            rowdict['analytical_laboratory'] = rowdict.get('analytical_laboratory_code', '')
+                        if not rowdict.get('analytical_laboratory', ''):
+                            rowdict['analytical_laboratory'] = rowdict.get('analytical_laboratory_name_sv', '')
+                        if not rowdict.get('analytical_laboratory', ''):
+                            rowdict['analytical_laboratory'] = rowdict.get('analytical_laboratory_name_en', '')
                         #
                         out_row = []
                         for header_item in self.getHeaders():
@@ -364,7 +364,7 @@ class SpeciesObsUtils(object):
     def deleteSpeciesObs(self, logfile_name, user):
         """ """
         # Delete from db.
-        export_db_rows = exportformats_models.ExportFiles.objects.filter(format='Species-obs')
+        export_db_rows = exportformats_models.ExportFiles.objects.filter(format='SpeciesObs')
         for db_row in export_db_rows: 
             db_row.delete()
 
