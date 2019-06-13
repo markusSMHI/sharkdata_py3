@@ -5,9 +5,9 @@
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
 import pathlib
-import datetime
+# import datetime
 import hashlib
-import app_speciesobs.models as speciesobs_models
+# import app_speciesobs.models as speciesobs_models
 import app_datasets.models as datasets_models
 import app_exportformats.models as exportformats_models
 import sharkdata_core.resources_utils as resources_utils
@@ -68,7 +68,7 @@ class SpeciesObsUtils(object):
                     'dataset_name',
                     'dataset_file_name',
                     #
-                    'status', # Used by SLU.
+#                     'status', # Used by SLU.
 #                     'last_update_date', # Used for internal purposes, may be external in the future.
 #                     'last_status_change_date', # Not used now, but can be used in the future.
                     ]
@@ -274,6 +274,35 @@ class SpeciesObsUtils(object):
                         # Don't add to SpeciesObs if position is invalid.
                         continue 
                     #
+                    
+                    # Only count for some parameters.
+                    parameter = rowdict.get('parameter', '')
+                    value = rowdict.get('value', '')
+                    if parameter not in ['Abundance',
+                                         '# counted',
+                                         'Observed species',
+                                         'Cover (%)',
+                                         'Species distribution max depth',
+                                         'Abundance class',
+                                         '# pups counted on land',
+                                         'Total # counted in water',
+                                         'Total # counted on land',
+                                        ]:
+                        continue
+                    # Value must be positive.
+                    value = rowdict.get('value', '')
+                    if value.upper() in ['', '0', '0.0', '0.0000', 'N', 'NO', 'F', 'FALSE']:
+                        continue
+                    value_float = 0.0
+                    try:
+                        value_float = float(value)
+                    except:
+                        pass
+                    if value_float > 0.0:
+                        pass # Ok.
+                    else:
+                        continue    
+                    
                     # Calculate DarwinCore Observation Id.
                     generated_occurrence_id = self.calculateDarwinCoreObservationIdAsMD5(rowdict)
                       
@@ -303,22 +332,22 @@ class SpeciesObsUtils(object):
    
                            
                         # Classification.    
-                        scientificname = rowdict.get('scientific_name', '-') if rowdict.get('scientific_name') else '-'
+                        scientificname = rowdict.get('scientific_name', '') if rowdict.get('scientific_name') else ''
                         taxon_worms_info = self.worms_info_object.getTaxonInfoDict(scientificname)
                         if taxon_worms_info:
-                            rowdict['taxon_kingdom'] = taxon_worms_info.get('kingdom', '-')
-                            rowdict['taxon_phylum'] = taxon_worms_info.get('phylum', '-')
-                            rowdict['taxon_class'] = taxon_worms_info.get('class', '-')
-                            rowdict['taxon_order'] = taxon_worms_info.get('order', '-')
-                            rowdict['taxon_family'] = taxon_worms_info.get('family', '-')
-                            rowdict['taxon_genus'] = taxon_worms_info.get('genus', '-')
+                            rowdict['taxon_kingdom'] = taxon_worms_info.get('kingdom', '')
+                            rowdict['taxon_phylum'] = taxon_worms_info.get('phylum', '')
+                            rowdict['taxon_class'] = taxon_worms_info.get('class', '')
+                            rowdict['taxon_order'] = taxon_worms_info.get('order', '')
+                            rowdict['taxon_family'] = taxon_worms_info.get('family', '')
+                            rowdict['taxon_genus'] = taxon_worms_info.get('genus', '')
                         else:
-                            rowdict['taxon_kingdom'] = '-'
-                            rowdict['taxon_phylum'] = '-'
-                            rowdict['taxon_class'] = '-'
-                            rowdict['taxon_order'] = '-'
-                            rowdict['taxon_family'] = '-'
-                            rowdict['taxon_genus'] = '-'
+                            rowdict['taxon_kingdom'] = ''
+                            rowdict['taxon_phylum'] = ''
+                            rowdict['taxon_class'] = ''
+                            rowdict['taxon_order'] = ''
+                            rowdict['taxon_family'] = ''
+                            rowdict['taxon_genus'] = ''
                         #
                         if not rowdict.get('orderer', ''):
                             rowdict['orderer'] = rowdict.get('orderer_code', '')
@@ -349,7 +378,7 @@ class SpeciesObsUtils(object):
                         #
                         out_row = []
                         for header_item in self.getHeaders():
-                            out_row.append(rowdict.get(header_item, '-'))
+                            out_row.append(rowdict.get(header_item, ''))
                         #    
                         obsfile.write('\t'.join(out_row) + '\n')
                         self.counter_rows += 1
