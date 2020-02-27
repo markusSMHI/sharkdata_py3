@@ -7,7 +7,7 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.context_processors import csrf
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 import app_resources.models as models
 import app_resources.forms as forms
@@ -29,7 +29,7 @@ def listResources(request):
     """ Generates an HTML page listing all resources. """
     resources = models.Resources.objects.all().order_by('resource_name')
     #
-    return render_to_response("list_resources.html",
+    return render(request, "list_resources.html",
                               {'resources' : resources})
 
 def listResourcesJson(request):

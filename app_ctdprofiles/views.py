@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 
-from django.shortcuts import render_to_response, HttpResponse
+from django.shortcuts import render, HttpResponse
 import django.core.paginator as paginator
 
 from . import ctdprofiles_core
@@ -149,7 +149,7 @@ def listCtdProfiles(request):
     prev_page = pagination_page - 1 if pagination_page > 1 else pagination_page
     next_page = pagination_page + 1 if pagination_page < pag.num_pages else pagination_page
 
-    return render_to_response("list_ctdprofiles.html",
+    return render(request, "list_ctdprofiles.html",
                               {'row_info' : row_info, 
                                'page' : pagination_page,
                                'per_page' : pagination_size,
@@ -175,6 +175,16 @@ def listCtdProfiles(request):
                                
                                'ctdprofiles' : ctdprofiles_page,
                                'map_html' : map_html,
+
+
+
+
+
+                               'selected_datatype' : "All", # TODO:
+
+
+
+
                               })
     
 def listCtdProfilesJson(request):

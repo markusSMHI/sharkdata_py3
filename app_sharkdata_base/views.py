@@ -5,7 +5,7 @@
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 import app_datasets.models as datasets_models
 import app_speciesobs.models as speciesobs_models
 
@@ -27,22 +27,22 @@ def viewDocumentation(request):
     if not first_species_name:
         first_species_name = 'Incertae sedis'
     #    
-    return render_to_response("documentation.html", 
+    return render(request, "documentation.html", 
                               {'first_dataset_name': first_dataset_name,
                                'first_species_name': first_species_name})
 
 def viewExampleCode(request):
     """ """    
-    return render_to_response("examplecode.html")
+    return render(request, "examplecode.html")
 
 def viewDataPolicy(request):
     """ """    
-    return render_to_response("datapolicy.html")
+    return render(request, "datapolicy.html")
 
 def viewAbout(request):
     """ """    
     number_of_datasets = datasets_models.Datasets.objects.count()
     #
-    return render_to_response("about.html", 
+    return render(request, "about.html", 
                               {'number_of_datasets': number_of_datasets})
 

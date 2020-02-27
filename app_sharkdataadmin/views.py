@@ -9,7 +9,7 @@ import datetime
 
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template.context_processors import csrf
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 # import django.core.paginator as paginator
 from django.conf import settings
 
@@ -30,7 +30,7 @@ def deleteDwcaExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("delete_dwca_exportfiles.html", contextinstance)
+        return render(request, "delete_dwca_exportfiles.html", contextinstance)
     elif request.method == "POST":
         #
         form = forms.DeleteDwcaExportFilesForm(request.POST)
@@ -58,7 +58,7 @@ def deleteDwcaExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("delete_dwca_exportfiles.html", contextinstance)
+        return render(request, "delete_dwca_exportfiles.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -71,7 +71,7 @@ def generateDwcaExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("generate_dwca_exportfiles.html", contextinstance)
+        return render(request, "generate_dwca_exportfiles.html", contextinstance)
     elif request.method == "POST":
         #
         form = forms.GenerateDwcaExportFilesForm(request.POST)
@@ -107,7 +107,7 @@ def generateDwcaExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("generate_dwca_exportfiles.html", contextinstance)
+        return render(request, "generate_dwca_exportfiles.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -123,7 +123,7 @@ def deleteIcesXmlExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("delete_ices_xml_exportfiles.html", contextinstance)
+        return render(request, "delete_ices_xml_exportfiles.html", contextinstance)
     elif request.method == "POST":
         #
         form = forms.DeleteIcesXmlExportFilesForm(request.POST)
@@ -151,7 +151,7 @@ def deleteIcesXmlExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("delete_ices_xml_exportfiles.html", contextinstance)
+        return render(request, "delete_ices_xml_exportfiles.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -164,7 +164,7 @@ def generateIcesXmlExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("generate_ices_xml_exportfiles.html", contextinstance)
+        return render(request, "generate_ices_xml_exportfiles.html", contextinstance)
     elif request.method == "POST":
         #
         form = forms.GenerateIcesXmlExportFilesForm(request.POST)
@@ -205,7 +205,7 @@ def generateIcesXmlExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("generate_ices_xml_exportfiles.html", contextinstance)
+        return render(request, "generate_ices_xml_exportfiles.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -218,7 +218,7 @@ def validateIcesXmlExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("validate_ices_xml_exportfiles.html", contextinstance)
+        return render(request, "validate_ices_xml_exportfiles.html", contextinstance)
     elif request.method == "POST":
         #
         form = forms.ValidateIcesXmlForm(request.POST)
@@ -255,7 +255,7 @@ def validateIcesXmlExportFiles(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("validate_ices_xml_exportfiles.html", contextinstance)
+        return render(request, "validate_ices_xml_exportfiles.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -295,7 +295,7 @@ def sharkDataAdmin(request):
         
         logrows.append(logrow)
     #
-    return render_to_response("sharkdata_admin.html",
+    return render(request, "sharkdata_admin.html",
                               {'logrows' : logrows})
 
 def viewLog(request, file_stem):
@@ -322,7 +322,7 @@ def updateDatasetsAndResources(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("update_datasets_and_resources.html", contextinstance)
+        return render(request, "update_datasets_and_resources.html", contextinstance)
     elif request.method == "POST":
         #
         form = forms.UpdateDatasetsAndResourcesForm(request.POST)
@@ -342,7 +342,7 @@ def updateDatasetsAndResources(request):
         contextinstance = {'form'   : form,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("update_datasets_and_resources.html", contextinstance)
+        return render(request, "update_datasets_and_resources.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -358,7 +358,7 @@ def updateSpeciesObs(request):
         contextinstance = {'form': form,
                            'error_message': error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("speciesobs_update.html", contextinstance)
+        return render(request, "speciesobs_update.html", contextinstance)
     elif request.method == "POST":
         form = forms.UpdateSpeciesObsForm(request.POST)
         if form.is_valid():
@@ -377,7 +377,7 @@ def updateSpeciesObs(request):
         contextinstance = {'form': form,
                            'error_message': error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("speciesobs_update.html", contextinstance)
+        return render(request, "speciesobs_update.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 
@@ -391,7 +391,7 @@ def cleanUpSpeciesObs(request):
         contextinstance = {'form': form,
                            'error_message': error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("speciesobs_cleanup.html", contextinstance)
+        return render(request, "speciesobs_cleanup.html", contextinstance)
     elif request.method == "POST":
         form = forms.CleanUpSpeciesObsForm(request.POST)
         if form.is_valid():
@@ -410,7 +410,7 @@ def cleanUpSpeciesObs(request):
         contextinstance = {'form': form,
                            'error_message': error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("speciesobs_cleanup.html", contextinstance)
+        return render(request, "speciesobs_cleanup.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/sharkdataadmin")
 

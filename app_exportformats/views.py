@@ -9,7 +9,7 @@ import codecs
 
 from django.http import HttpResponse, HttpResponseRedirect #, StreamingHttpResponse
 from django.template.context_processors import csrf
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 # from wsgiref.util import FileWrapper
 from django.core import paginator
@@ -170,7 +170,7 @@ def listExportFiles(request):
     prev_page = pagination_page - 1 if pagination_page > 1 else pagination_page
     next_page = pagination_page + 1 if pagination_page < pag.num_pages else pagination_page
 
-    return render_to_response("list_exportfiles.html",
+    return render(request, "list_exportfiles.html",
                               {'row_info' : row_info, 
                                'page' : pagination_page,
                                'per_page' : pagination_size,
@@ -278,7 +278,7 @@ def deleteExportFile(request, export_name):
                            'exportfile' : exportfile,
                            'error_message' : None}
         contextinstance.update(csrf(request))
-        return render_to_response("delete_exportfile.html", contextinstance)
+        return render(request, "delete_exportfile.html", contextinstance)
     elif request.method == "POST":
         error_message = None # initially.
         #
@@ -310,6 +310,6 @@ def deleteExportFile(request, export_name):
                            'exportfile' : exportfile,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("delete_exportfile.html", contextinstance)
+        return render(request, "delete_exportfile.html", contextinstance)
     # Not a valid request method.
     return HttpResponseRedirect("/exportformats")

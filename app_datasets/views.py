@@ -8,7 +8,7 @@ import os
 import json
 from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.template.context_processors import csrf
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.conf import settings
 from  wsgiref.util import FileWrapper
 import django.core.paginator as paginator
@@ -295,7 +295,7 @@ def listDatasets(request):
     prev_page = pagination_page - 1 if pagination_page > 1 else pagination_page
     next_page = pagination_page + 1 if pagination_page < pag.num_pages else pagination_page
 
-    return render_to_response("list_datasets.html",
+    return render(request, "list_datasets.html",
                               {'row_info' : row_info, 
                                'page' : pagination_page,
                                'per_page' : pagination_size,

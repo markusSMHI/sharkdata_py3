@@ -10,7 +10,7 @@ import json
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import RequestContext
 from django.template.context_processors import csrf
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.contrib.gis.shortcuts import render_to_kml
 from django.conf import settings
 import app_speciesobs.models as models
@@ -40,7 +40,7 @@ def listSpeciesObs(request):
                            'url_table' : None,
                            'error_message' : error_message}
         contextinstance.update(csrf(request))
-        return render_to_response("list_speciesobs.html", contextinstance)
+        return render(request, "list_speciesobs.html", contextinstance)
     elif request.method == "POST":
         if request.POST['confirm'] == "get_data":
             form = forms.SpeciesObsFilterForm(request.POST)
@@ -88,7 +88,7 @@ def listSpeciesObs(request):
                                'url_table' : None,
                                'error_message' : error_message}
             contextinstance.update(csrf(request))
-            return render_to_response("list_speciesobs.html", contextinstance)
+            return render(request, "list_speciesobs.html", contextinstance)
         #
         if request.POST['confirm'] == "view_url":
             #
@@ -131,7 +131,7 @@ def listSpeciesObs(request):
                                'url_table' : url_table,
                                'error_message' : error_message}
             contextinstance.update(csrf(request))
-            return render_to_response("list_speciesobs.html", contextinstance)
+            return render(request, "list_speciesobs.html", contextinstance)
     #
     return HttpResponseRedirect("/speciesobs")
 
@@ -375,6 +375,6 @@ def tableSpeciesObsJson(request):
 #     db_filter_dict['status__iexact'] = 'ACTIVE'
 #     observations_count  = models.SpeciesObs.objects.kml().filter(**db_filter_dict).count()
 #     
-#     return render_to_response('speciesobs_map.html', {'kml_link' : kml_link,
+#     return render(request, 'speciesobs_map.html', {'kml_link' : kml_link,
 #                                                       'location_count' : observations_count}) 
 
