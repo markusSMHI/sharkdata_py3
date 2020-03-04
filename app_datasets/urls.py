@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 #
-# Copyright (c) 2013-2016 SMHI, Swedish Meteorological and Hydrological Institute 
+# Copyright (c) 2013-present SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
 from django.conf.urls import url
 import app_datasets.views
+
+########### TEST. ###########
+from rest_framework_swagger.views import get_swagger_view
+schema_view = get_swagger_view(title='SHARKdata API')
+
 
 urlpatterns = [
     url(r'^$', app_datasets.views.listDatasets),
@@ -30,4 +35,13 @@ urlpatterns = [
     url(r'^(?P<dataset_name>\S+)/dwc_archive.zip', app_datasets.views.dwcArchiveZip),
     url(r'^(?P<dataset_name>\S+)/dwc_archive_eurobis.zip', app_datasets.views.dwcArchiveEurobisZip),
     url(r'^(?P<dataset_name>\S+)/dwc_archive_sampledata.zip', app_datasets.views.dwcArchiveSampledataZip),
+    
+    
+    
+    
+    ########### TEST. ###########
+    url(r'^api_doc', schema_view),
+    
+    
+    
 ]

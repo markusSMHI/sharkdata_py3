@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding:utf-8 -*-
 # Project: http://sharkdata.se
-# Copyright (c) 2018 SMHI, Swedish Meteorological and Hydrological Institute 
+# Copyright (c) 2018-present SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
 import datetime

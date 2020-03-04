@@ -1,12 +1,6 @@
 """
 Django settings for sharkdata_proj project.
-For Django 2.2 and Python 3.
-Source code: 
 
-For SHARKdata:
-- Copy this file (TEMPLATE_settings.py) to sharkdata_proj/sharkdata_proj/settings.py
-- Replace all '<REPLACE>' with proper values.
-- Don't use "DEBUG = True" in production.
 """
 
 import os
@@ -22,12 +16,22 @@ env_secret_key = os.environ.get('ENV_DJANGO_SECRET_KEY', '')
 env_allowed_hosts = os.environ.get('ENV_DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')
 env_users_and_pw = os.environ.get('ENV_DJANGO_USERS_AND_PW', 'apa:bepa,cepa:depa')
 env_timezone = os.environ.get('ENV_DJANGO_TIMEZONE', 'Europe/Stockholm')
+env_base_dir = os.environ.get('ENV_BASE_DIR', '')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+if env_debug.lower() in ['true', 't', 'yes', 'y']:
+    DEBUG = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+root_dir = pathlib.Path(BASE_DIR).parent.parent 
+if env_base_dir:
+    root_dir = pathlib.Path(env_base_dir)
 
-# Application specific constants.
-root_dir = pathlib.Path(BASE_DIR).parent.parent
+if DEBUG:
+    print('root_dir: ', root_dir)
+
 LOGGER = logging.getLogger('SHARKdata')
 SHARKDATA_DB = pathlib.Path(root_dir, 'db')
 SHARKDATA_LOG = pathlib.Path(root_dir, 'log')
@@ -51,11 +55,6 @@ if not SHARKDATA_DATA.exists():
 SECRET_KEY = '+ze+9-g*(20_*yr%+0-y(aie6u(#4y0^6g@#=962spje4lder9'
 if env_secret_key:
     SECRET_KEY = env_secret_key
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-if env_debug.lower() in ['true', 't', 'yes', 'y']:
-    DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 if env_allowed_hosts:
@@ -81,6 +80,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # For SHARKdata.
+    
+    'rest_framework_swagger',               ########### TEST. ###########
+    
     'app_sharkdata_base',
     'app_datasets',
     'app_ctdprofiles',
@@ -89,6 +91,11 @@ INSTALLED_APPS = [
     'app_speciesobs',
     'app_sharkdataadmin',
 ]
+
+
+########### TEST. ###########
+REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

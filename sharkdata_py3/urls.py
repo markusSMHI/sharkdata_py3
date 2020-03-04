@@ -23,6 +23,12 @@ Including another URLconf
 from django.conf.urls import include, url
 import app_sharkdata_base.views
 
+
+########### TEST. ###########
+# from rest_framework_swagger.views import get_swagger_view
+# schema_view = get_swagger_view(title='SHARKdata API')
+
+
 urlpatterns = [
     url(r'^about/', app_sharkdata_base.views.viewAbout),
     url(r'^documentation/',app_sharkdata_base.views.viewDocumentation),
@@ -37,4 +43,13 @@ urlpatterns = [
     url(r'^sharkdataadmin/', include('app_sharkdataadmin.urls')), 
     #
     url(r'^', include('app_datasets.urls')), # Default page.
+    
+    
+    
+    
+    ########### TEST. ###########
+#     url(r'^api_documentation', schema_view),
+    
+    
+    
 ]
