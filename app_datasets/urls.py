@@ -8,8 +8,8 @@ from django.conf.urls import url
 import app_datasets.views
 
 ########### TEST. ###########
-from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='SHARKdata API')
+# from rest_framework_swagger.views import get_swagger_view
+# schema_view = get_swagger_view(title='SHARKdata API')
 
 
 urlpatterns = [
@@ -40,7 +40,7 @@ urlpatterns = [
     
     
     ########### TEST. ###########
-    url(r'^api_doc', schema_view),
+#     url(r'^api_doc', schema_view),
     
     
     
