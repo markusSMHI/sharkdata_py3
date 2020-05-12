@@ -84,19 +84,19 @@ class ResourcesUtils(object):
         #
         self._translated_headers[(resource_name, language)] = translate_dict
 
-    def saveUploadedFileToFtp(self, uploaded_file):
-        """ Note: The parameter 'uploaded_file must' be of class UploadedFile. """
-        self.clear()
-        #
-        file_name = str(uploaded_file)
-        file_path = pathlib.Path(self._data_in_resources, file_name)
-        # Save by reading/writing chunks..
-        destination = open(file_path, 'wb+')
-        try:
-            for chunk in uploaded_file.chunks():
-                destination.write(chunk)
-        finally:
-            destination.close()
+#     def saveUploadedFileToFtp(self, uploaded_file):
+#         """ Note: The parameter 'uploaded_file must' be of class UploadedFile. """
+#         self.clear()
+#         #
+#         file_name = str(uploaded_file)
+#         file_path = pathlib.Path(self._data_in_resources, file_name)
+#         # Save by reading/writing chunks..
+#         destination = open(file_path, 'wb+')
+#         try:
+#             for chunk in uploaded_file.chunks():
+#                 destination.write(chunk)
+#         finally:
+#             destination.close()
 
 #     def deleteFileFromFtp(self, file_name):
 #         """ Delete one resource from the FTP area. """
@@ -106,14 +106,14 @@ class ResourcesUtils(object):
 #         # Delete the file.
 #         file_path.unlink()
 
-    def deleteAllFilesFromFtp(self):
-        """ Delete all resources from FTP area. """
-        self.clear()
-        #
-        for file_name in self._data_in_resources.glob('*'):
-            file_path = pathlib.Path(self._data_in_resources, file_name)
-            if file_path.isfile():
-                file_path.unlink()
+#     def deleteAllFilesFromFtp(self):
+#         """ Delete all resources from FTP area. """
+#         self.clear()
+#         #
+#         for file_name in self._data_in_resources.glob('*'):
+#             file_path = pathlib.Path(self._data_in_resources, file_name)
+#             if file_path.isfile():
+#                 file_path.unlink()
 
     def writeResourcesInfoToDb(self, logfile_name, user = ''):
         """ Updates the database from datasets stored in the FTP area.

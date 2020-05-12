@@ -42,7 +42,7 @@ class SharkArchiveFileReader(object):
     def listContent(self):
         """ """
         if self._zip is None:
-            self.open()    
+            self.open()
         if self._zip:
             return self._zip.namelist()
         else:
@@ -102,6 +102,16 @@ class SharkArchiveFileReader(object):
             return True
         #    
         return False
+
+#     def isDatasetStatusProd(self):
+#         """ """
+#         if self._zip is None:
+#             self.open()    
+#         if 'shark_metadata_auto.txt' not in self._zip.namelist():
+#             raise UserWarning('The entry shark_metadata_auto.txt is missing in ' + self._filepathname)
+#         #    
+#         return self._zip.read('shark_metadata_auto.txt') 
+#         #return '\r\n'.join(self._zip.open('shark_metadata_auto.txt').readlines())
 
 
 
@@ -232,16 +242,16 @@ class SharkArchiveFileWriter(object):
             #
             if year_index:
                 metadata_rows.append('min_year: ' + min_year)
-                metadata_rows.append('max_year: ' + max_year)            
+                metadata_rows.append('max_year: ' + max_year)
             if date_index:
                 if not year_index:
                     metadata_rows.append('min_year: ' + min_date[0:4])
-                    metadata_rows.append('max_year: ' + max_date[0:4])            
+                    metadata_rows.append('max_year: ' + max_date[0:4])
                 metadata_rows.append('min_date: ' + min_date)
-                metadata_rows.append('max_date: ' + max_date)                
+                metadata_rows.append('max_date: ' + max_date)
             if latitude_index:           
                 metadata_rows.append('min_latitude: ' + min_latitude.replace(',', '.'))
-                metadata_rows.append('max_latitude: ' + max_latitude.replace(',', '.')   )                                               
+                metadata_rows.append('max_latitude: ' + max_latitude.replace(',', '.')   )
             if longitude_index:           
                 metadata_rows.append('min_longitude: ' + min_longitude.replace(',', '.'))
                 metadata_rows.append('max_longitude: ' + max_longitude.replace(',', '.'))
