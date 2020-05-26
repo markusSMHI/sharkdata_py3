@@ -174,22 +174,22 @@ def datasetMetadataJson(request, dataset_name):
     #
     response = HttpResponse(content_type = 'application/json; charset=utf-8')
     response['Content-Disposition'] = 'attachment; filename=' +dataset_file_name.replace('.zip', '_METADATA.json')    
-    response.write(json.dumps(metadata_dict, encoding = 'utf-8'))
+    response.write(json.dumps(metadata_dict)) #, encoding = 'utf-8'))
     return response
 
-def datasetMetadataXml(request, dataset_name):
-    """ Returns metadata in XML (ISO 19139) format for a specific dataset. """
-    dataset = models.Datasets.objects.get(dataset_name = dataset_name)
-    dataset_file_name = dataset.dataset_file_name
-    #
-    metadata_as_text = sharkdata_core.DatasetUtils().getMetadataAsText(dataset_name)
-    #
-    metadata_xml = sharkdata_core.MetadataUtils().metadataToIso19139(metadata_as_text)
-    #
-    response = HttpResponse(content_type = 'application/xml; charset=utf-8')    
-    response['Content-Disposition'] = 'attachment; filename=' + dataset_file_name.replace('.zip', '_METADATA.xml')    
-    response.write(metadata_xml)
-    return response
+# def datasetMetadataXml(request, dataset_name):
+#     """ Returns metadata in XML (ISO 19139) format for a specific dataset. """
+#     dataset = models.Datasets.objects.get(dataset_name = dataset_name)
+#     dataset_file_name = dataset.dataset_file_name
+#     #
+#     metadata_as_text = sharkdata_core.DatasetUtils().getMetadataAsText(dataset_name)
+#     #
+#     metadata_xml = sharkdata_core.MetadataUtils().metadataToIso19139(metadata_as_text)
+#     #
+#     response = HttpResponse(content_type = 'application/xml; charset=utf-8')    
+#     response['Content-Disposition'] = 'attachment; filename=' + dataset_file_name.replace('.zip', '_METADATA.xml')    
+#     response.write(metadata_xml)
+#     return response
 
 
 

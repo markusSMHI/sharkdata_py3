@@ -9,7 +9,7 @@ from sharkdata_core.patterns import singleton
 from sharkdata_core.archive_utils.archive_manager import ArchiveManager
 
 from sharkdata_core.dataset_utils import DatasetUtils
-from sharkdata_core.metadata_utils import MetadataUtils
+# from sharkdata_core.metadata_utils import MetadataUtils
 from sharkdata_core.resources_utils import ResourcesUtils
 from sharkdata_core.ices_xml_generator import export_ices_format
 from sharkdata_core.speciesobs_utils import SpeciesObsUtils 

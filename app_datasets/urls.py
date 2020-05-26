@@ -23,7 +23,7 @@ urlpatterns = [
     #
     path('<str:dataset_name>/metadata.txt/', app_datasets.views.datasetMetadataText),
     path('<str:dataset_name>/metadata.json/', app_datasets.views.datasetMetadataJson),
-    path('<str:dataset_name>/metadata.xml/', app_datasets.views.datasetMetadataXml),
+#     path('<str:dataset_name>/metadata.xml/', app_datasets.views.datasetMetadataXml),
     # SHARK Archives.
     path('<str:dataset_name>/shark_archive.zip/', app_datasets.views.sharkArchiveZip),
     # Darwin Core Archives.
