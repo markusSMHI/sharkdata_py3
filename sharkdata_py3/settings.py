@@ -80,9 +80,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # For SHARKdata.
-    
-#     'rest_framework_swagger',               ########### TEST. ###########
-    
     'app_sharkdata_base',
     'app_datasets',
     'app_ctdprofiles',
