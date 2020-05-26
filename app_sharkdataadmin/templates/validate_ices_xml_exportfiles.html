@@ -13,7 +13,7 @@
         <div class="panel-body">
             <p>Validate ICES-XML by calling the DATSU server at ICES.
             Files with status "Not checked" or "Test" will be validated. </p>
-            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="validate_ices_xml_exportfiles">
+            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="validate_ices_xml_exportfiles/">
             	{% csrf_token %}
                 {{ form.as_p }}
                 <p class="sharkdata-form-actions">

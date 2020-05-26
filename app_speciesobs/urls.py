@@ -4,21 +4,21 @@
 # Copyright (c) 2013-present SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
-from django.conf.urls import url
+from django.urls import path
 import app_speciesobs.views
 
 urlpatterns = [
     # HTML pages.
-    url(r'^$', app_speciesobs.views.listSpeciesObs),
-    url(r'^list/', app_speciesobs.views.listSpeciesObs),
-    url(r'^table/', app_speciesobs.views.tableSpeciesObsText),
+    path('', app_speciesobs.views.listSpeciesObs),
+    path('list/', app_speciesobs.views.listSpeciesObs),
+    path('table/', app_speciesobs.views.tableSpeciesObsText),
     
     # Text and JSON.
-    url(r'^table.txt', app_speciesobs.views.tableSpeciesObsText),
-    url(r'^table.json', app_speciesobs.views.tableSpeciesObsJson),
+    path('table.txt/', app_speciesobs.views.tableSpeciesObsText),
+    path('table.json/', app_speciesobs.views.tableSpeciesObsJson),
     
 #     # Positions.
-#     url(r'^positions.kml', app_speciesobs.views.positionsKml),
-#     url(r'^year_info.kml', app_speciesobs.views.yearInfoKml),
-#     url(r'^map', app_speciesobs.views.mapOpenlayers),
+#     path('positions.kml/', app_speciesobs.views.positionsKml),
+#     path('year_info.kml/', app_speciesobs.views.yearInfoKml),
+#     path('map/', app_speciesobs.views.mapOpenlayers),
 ]

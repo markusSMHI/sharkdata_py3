@@ -14,7 +14,7 @@
             <p>Select years and datatype to generate new DarwinCore-Archive export files.
             One file will be generated for each year and datatype.
             Check "Approved (DC)" if the data is ready for harvesting.</p>
-            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="generate_ices_xml_exportfiles">
+            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="generate_dwca_exportfiles/">
             	{% csrf_token %}
                 {{ form.as_p }}
                 <p class="sharkdata-form-actions">

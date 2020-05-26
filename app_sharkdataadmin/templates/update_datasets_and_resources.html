@@ -13,7 +13,7 @@
         <div class="panel-body">
             <p>Do you wan't to reload all datasets and resources?
             </p>
-            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="datasets_load_all">
+            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="datasets_load_all/" >
             	{% csrf_token %}
                 {{ form.as_p }}
                 <p class="sharkdata-form-actions">

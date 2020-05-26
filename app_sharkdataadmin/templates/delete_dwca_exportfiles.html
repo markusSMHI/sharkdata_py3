@@ -13,7 +13,7 @@
         <div class="panel-body">
             <p>Are you sure you want to delete all DwC-A export files?
             </p>
-            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="exportfiles_delete_all_dwca">
+            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="exportfiles_delete_all_dwca/">
             	{% csrf_token %}
                 {{ form.as_p }}
                 <p class="sharkdata-form-actions">

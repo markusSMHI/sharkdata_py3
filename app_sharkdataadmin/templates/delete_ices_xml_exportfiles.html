@@ -13,7 +13,7 @@
         <div class="panel-body">
             <p>Are you sure you want to delete all ICES export files?
             </p>
-            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="delete_ices_xml_exportfiles">
+            <form class="sharkdata-form" enctype="multipart/form-data" method="post" action="delete_ices_xml_exportfiles/">
             	{% csrf_token %}
                 {{ form.as_p }}
                 <p class="sharkdata-form-actions">

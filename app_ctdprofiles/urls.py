@@ -4,14 +4,14 @@
 # Copyright (c) 2013-present SMHI, Swedish Meteorological and Hydrological Institute 
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 
-from django.conf.urls import url
+from django.urls import path
 import app_ctdprofiles.views
 
 urlpatterns = [
-    url(r'^$', app_ctdprofiles.views.listCtdProfiles),
-    url(r'^list/', app_ctdprofiles.views.listCtdProfiles),
-    url(r'^list.json', app_ctdprofiles.views.listCtdProfilesJson),
+    path('', app_ctdprofiles.views.listCtdProfiles),
+    path('list/', app_ctdprofiles.views.listCtdProfiles),
+    path('list.json/', app_ctdprofiles.views.listCtdProfilesJson),
     #
-    url(r'^map/', app_ctdprofiles.views.viewTestMap),
-    url(r'^plot/', app_ctdprofiles.views.viewTestPlot),
+    path('map/<str:profile_name>/', app_ctdprofiles.views.viewTestMap),
+    path('plot/<str:profile_name>/', app_ctdprofiles.views.viewTestPlot),
 ]
