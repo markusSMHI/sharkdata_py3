@@ -176,15 +176,7 @@ def listCtdProfiles(request):
                                'ctdprofiles' : ctdprofiles_page,
                                'map_html' : map_html,
 
-
-
-
-
                                'selected_datatype' : "All", # TODO:
-
-
-
-
                               })
     
 def listCtdProfilesJson(request):
@@ -203,15 +195,29 @@ def listCtdProfilesJson(request):
 #     return response
 
 
-def viewTestMap(request):
+def viewTestMap(request, profile_name):
     """ """
-    ctd = ctdprofiles_core.CtdProfilesCore()
-
-    return HttpResponse(content = ctd.createMap())
-
-def viewTestPlot(request):
-
+    lat_long_desc_table = []
+    ctdprofiles = models.CtdProfiles.objects.filter(ctd_profile_name = profile_name)
+    for db_row in ctdprofiles: 
+        row = [db_row.latitude, db_row.longitude, db_row.station_name + "\n" + db_row.sample_date]
+        lat_long_desc_table.append(row)
+    
     ctd = ctdprofiles_core.CtdProfilesCore()
     
-    return HttpResponse(content = ctd.createPlot('aaa', 'bbb'))
+    return HttpResponse(content = ctd.createMap(lat_long_desc_table))
+
+def viewTestPlot(request, profile_name):
+    """ """
+    ctdprofiles = models.CtdProfiles.objects.filter(ctd_profile_name = profile_name)
+    for db_row in ctdprofiles: 
+        ftp_file_path = db_row.ftp_file_path
+        ctd_profile_name = db_row.ctd_profile_name
+        
+        ctd = ctdprofiles_core.CtdProfilesCore()
+        return HttpResponse(content = ctd.createPlot(ftp_file_path, ctd_profile_name))
+
+#     ctd = ctdprofiles_core.CtdProfilesCore()
+#     
+#     return HttpResponse(content = ctd.createPlot('aaa', 'bbb'))
 

@@ -138,18 +138,18 @@ class DatasetUtils(object):
         #
         return '\r\n'.join(metadata_list)
     
-    def saveUploadedFileToFtp(self, uploaded_file):
-        """ Note: The parameter 'uploaded_file must' be of class UploadedFile. """
-        file_name = str(uploaded_file)
-        file_path = pathlib.Path(self._data_in_datasets, file_name)
-        # Save by reading/writing chunks..
-        destination = open(file_path, 'wb+')
-        try:
-            for chunk in uploaded_file.chunks():
-                destination.write(chunk)
-        finally:
-            destination.close()
-        return None # No error message.
+#     def saveUploadedFileToFtp(self, uploaded_file):
+#         """ Note: The parameter 'uploaded_file must' be of class UploadedFile. """
+#         file_name = str(uploaded_file)
+#         file_path = pathlib.Path(self._data_in_datasets, file_name)
+#         # Save by reading/writing chunks..
+#         destination = open(file_path, 'wb+')
+#         try:
+#             for chunk in uploaded_file.chunks():
+#                 destination.write(chunk)
+#         finally:
+#             destination.close()
+#         return None # No error message.
 
 #     def deleteFileFromFtp(self, file_name):
 #         """ Delete one version of the dataset from the FTP area. """
@@ -159,38 +159,61 @@ class DatasetUtils(object):
 #         #
 #         return None # No error message.
 
-    def deleteAllFilesFromFtp(self):
-        """ Delete all datasets from FTP area. """
-        for file_name in self._data_in_datasets.glob('**/*.zip'):
-            if file_name.isfile():
-                if file_name.startswith('SHARK') and file_name.endswith('.zip'):
-                    file_name.unlink() 
-                    
-#         # Removes file.
-#         for file_name in os.listdir(self._data_in_datasets):
-#             file_path = pathlib.Path(self._data_in_datasets, file_name)
+#     def deleteAllFilesFromFtp(self):
+#         """ Delete all datasets from FTP area. """
+#         for file_name in self._data_in_datasets.glob('**/*.zip'):
 #             if file_name.isfile():
 #                 if file_name.startswith('SHARK') and file_name.endswith('.zip'):
-#                     file_path.unlink() # Removes file.
-        #
-        return None # No error message.
+#                     file_name.unlink() 
+#                     
+# #         # Removes file.
+# #         for file_name in os.listdir(self._data_in_datasets):
+# #             file_path = pathlib.Path(self._data_in_datasets, file_name)
+# #             if file_name.isfile():
+# #                 if file_name.startswith('SHARK') and file_name.endswith('.zip'):
+# #                     file_path.unlink() # Removes file.
+#         #
+#         return None # No error message.
 
-    def deleteOldFtpVersions(self, logfile_name = None, user = ''):
-        """ Delete older versions of the datasets from the FTP area. """
-        archive = sharkdata_core.SharkArchive(self._data_in_datasets)
-        for file_name in sorted(archive.getOlderVersionsOfSharkArchiveFilenames()):
-            file_path = pathlib.Path(self._data_in_datasets, file_name)
-            if file_path.isfile():
-                if file_name.startswith('SHARK') and file_name.endswith('.zip'):
-                    file_path.unlink() # Removes file.
-        #
-        return None # No error message.
+#     def deleteOldFtpVersions(self, logfile_name = None, user = ''):
+#         """ Delete older versions of the datasets from the FTP area. """
+#         archive = sharkdata_core.SharkArchive(self._data_in_datasets)
+#         for file_name in sorted(archive.getOlderVersionsOfSharkArchiveFilenames()):
+#             file_path = pathlib.Path(self._data_in_datasets, file_name)
+#             if file_path.isfile():
+#                 if file_name.startswith('SHARK') and file_name.endswith('.zip'):
+#                     file_path.unlink() # Removes file.
+#         #
+#         return None # No error message.
 
     def writeLatestDatasetsInfoToDb(self, logfile_name = None, user = ''):
         """ Updates the database from datasets stored in the FTP area.
             I multiple versions of a dataset are in the FTP area only the latest 
             will be loaded.
         """
+
+        # Check dataset in 'data_in/datasets'. Create a list of dataset names.
+        dataset_names = []
+        for dataset_path in self._data_in_datasets.glob('SHARK_*.zip'):
+            print(dataset_path.name)
+            parts = dataset_path.name.split('_version')
+            if len(parts) >= 1:
+                dataset_names.append(parts[0])
+            
+        # Remove all datasets from 'data/datasets' not included in 'dataset_names'.
+        for dataset_path in self._data_datasets.glob('SHARK_*.zip'):
+            print(dataset_path.name)
+            parts = dataset_path.name.split('_version')
+            if len(parts) >= 1:
+                if parts[0] not in dataset_names:
+                    # Delete the file.
+                    dataset_path.unlink() # Removes file.
+                    # Remove from database.
+                    datasets_models.Datasets.objects.get(dataset_name=dataset_path.name).delete()
+
+
+
+
         error_counter = 0
         # Remove all db rows. 
         datasets_models.Datasets.objects.all().delete()
@@ -213,6 +236,40 @@ class DatasetUtils(object):
                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + str(e))
         #
         return error_counter
+
+
+
+
+
+
+
+
+
+
+
+
+#         error_counter = 0
+#         # Remove all db rows. 
+#         datasets_models.Datasets.objects.all().delete()
+#         
+#         # CTD profiles.            
+#         ctdprofiles_models.CtdProfiles.objects.all().delete()
+#         
+#         # Get latest datasets from FTP archive.
+#         archive = sharkdata_core.SharkArchive(self._data_in_datasets)
+#         for file_name in sorted(archive.getLatestSharkArchiveFilenames()):
+#             if logfile_name:
+#                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='Loading file: ' + file_name + '...')
+#             try:
+#                 error_string = self.writeFileInfoToDb(file_name, logfile_name, user)
+#                 if error_string:
+#                     error_counter += 1 
+#                     sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + error_string)
+#             except Exception as e:
+#                 error_counter += 1 
+#                 sharkdata_core.SharkdataAdminUtils().log_write(logfile_name, log_row='ERROR: Failed to load: ' + file_name + '. Error: ' + str(e))
+#         #
+#         return error_counter
 
     def writeFileInfoToDb(self, file_name, logfile_name = None, user = ''):
         """ Extracts info from the dataset filename and from the zip file content and adds to database. """
@@ -248,11 +305,26 @@ class DatasetUtils(object):
                 
                 # CTD profiles.
                 ctd_profiles_table = None
-                if datatype == 'CTDprofile':
+
+                
+                
+#                 if datatype == 'CTDprofile':
+                if datatype == 'Profile':
+                
+                    
+                    
                     ctd_profiles_table = zipreader.getDataAsText()
 
             finally:
-                zipreader.close()                        
+                zipreader.close()
+            
+            # Remove from database.
+            try:
+                db_dataset = datasets_models.Datasets.objects.get(dataset_name=dataset_name)
+                db_dataset.delete()
+            except datasets_models.Datasets.DoesNotExist:
+                pass # Not found.
+            
             # Save to db.
             dataset = datasets_models.Datasets(
                           dataset_name = dataset_name,
@@ -280,30 +352,36 @@ class DatasetUtils(object):
                     else:
                         if len(rowitems) > 1:
                             row_dict = dict(zip(data_header, rowitems))
+                            
+                            water_depth_m = 0.0
+                            try:
+                                water_depth_m = float(row_dict.get('water_depth_m', -99))
+                            except:
+                                pass
             
-                        db_profiles = ctdprofiles_models.CtdProfiles(
-                                visit_year = row_dict.get('visit_year', ''), # '2002', 
-                                platform_code = row_dict.get('platform_code', ''), # 'Svea', 
-                                expedition_id = row_dict.get('expedition_id', ''), # 'aa-bb-11', 
-                                visit_id = row_dict.get('visit_id', ''), # '123456', 
-                                station_name = row_dict.get('station_name', ''), # 'Station1A', 
-                                latitude = float(row_dict.get('sample_latitude_dd', -99)), # 70.00, 
-                                longitude = float(row_dict.get('sample_longitude_dd', -99)), # 10.00, 
-                                water_depth_m = float(row_dict.get('water_depth_m', -99)), # '80.0', 
-                                sampler_type_code = row_dict.get('sampler_type_code', ''), # 'CTD', 
-                                sample_date = row_dict.get('sample_date', ''), # '2000-01-01', 
-                                sample_project_code = row_dict.get('sample_project_code', ''), # 'Proj', 
-#                                 sample_project_code = row_dict.get('sample_project_name_sv', ''), # 'Proj', 
-                                sample_orderer_code = row_dict.get('sample_orderer_code', ''), # 'Orderer', 
-#                                 sample_orderer_code = row_dict.get('sample_orderer_name_sv', ''), # 'Orderer', 
-                                sampling_laboratory_code = row_dict.get('sampling_laboratory_code', ''), # 'Slabo', 
-#                                 sampling_laboratory_code = row_dict.get('sampling_laboratory_name_sv', ''), # 'Slabo', 
-                                revision_date = row_dict.get('revision_date', ''), # '2010-10-10', 
-                                ctd_profile_name = row_dict.get('ctd_profile_name', ''), # 'ctd.profile', 
-                                dataset_file_name = file_name, 
-                                ftp_file_path = ftp_file_path, 
-                            )
-                        db_profiles.save()
+                            db_profiles = ctdprofiles_models.CtdProfiles(
+                                    visit_year = row_dict.get('visit_year', ''), # '2002', 
+                                    platform_code = row_dict.get('platform_code', ''), # 'Svea', 
+                                    expedition_id = row_dict.get('expedition_id', ''), # 'aa-bb-11', 
+                                    visit_id = row_dict.get('visit_id', ''), # '123456', 
+                                    station_name = row_dict.get('station_name', ''), # 'Station1A', 
+                                    latitude = float(row_dict.get('sample_latitude_dd', -99)), # 70.00, 
+                                    longitude = float(row_dict.get('sample_longitude_dd', -99)), # 10.00, 
+                                    water_depth_m = water_depth_m, # '80.0', 
+                                    sampler_type_code = row_dict.get('sampler_type_code', ''), # 'CTD', 
+                                    sample_date = row_dict.get('visit_date', ''), # '2000-01-01', 
+                                   sample_project_code = row_dict.get('sample_project_code', ''), # 'Proj', 
+    #                                 sample_project_code = row_dict.get('sample_project_name_sv', ''), # 'Proj', 
+                                    sample_orderer_code = row_dict.get('sample_orderer_code', ''), # 'Orderer', 
+    #                                 sample_orderer_code = row_dict.get('sample_orderer_name_sv', ''), # 'Orderer', 
+                                    sampling_laboratory_code = row_dict.get('sampling_laboratory_code', ''), # 'Slabo', 
+    #                                 sampling_laboratory_code = row_dict.get('sampling_laboratory_name_sv', ''), # 'Slabo', 
+                                    revision_date = row_dict.get('revision_date', ''), # '2010-10-10', 
+                                    ctd_profile_name = row_dict.get('profile_file_name_db', ''), # 'ctd.profile', 
+                                    dataset_file_name = file_name, 
+                                    ftp_file_path = ftp_file_path, 
+                                )
+                            db_profiles.save()
             #
             return None # No error message.
         #

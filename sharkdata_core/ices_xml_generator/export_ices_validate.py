@@ -65,12 +65,12 @@ class ValidateIcesXml(object):
             elif (db_export.status == 'Not checked'):
                 
 #                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/test,sharkdata,se!exportformats!'
-#                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/sharkdata,se!exportformats!'
+                url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/sharkdata,se!exportformats!'
 
 
 
                 # Test server: django.mellifica.org
-                url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/django,mellifica,org!exportformats!' # TODO: For test only...
+#                 url_part_1 = 'http://datsu.ices.dk/DatsuRest/api/ScreenFile/django,mellifica,org!exportformats!' # TODO: For test only...
                 
 
                 
