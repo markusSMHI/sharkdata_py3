@@ -44,10 +44,26 @@ class CtdProfilesCore():
 
     def createPlot(self, path_zipfile, profile_name):
         """ Plots ... """
+        rzip = ctd_profile_plot.ReadZipFile(path_zipfile, profile_name)
     
-#         path_zipfile = 'D:/arnold/41_sharkdata_sharkdata_v2/sharkdata_ftp/datasets/SHARK_CTDprofile_2018_BAS_SMHI_version_2019-01-17.zip'
-#         profile_name = 'ctd_profile_SBE09_0745_20181209_1122_34_01_0173'
-        
+        parameter_list = ['PRES_CTD [dbar]', 'CNDC_CTD [S/m]', 'CNDC2_CTD [S/m]', 'SALT_CTD [psu (PSS-78)]',
+                          'SALT2_CTD [psu (PSS-78)]', 'TEMP_CTD [°C (ITS-90)]', 'TEMP2_CTD [°C (ITS-90)]',
+                          'DOXY_CTD [ml/l]', 'DOXY2_CTD [ml/l]', 'PAR_CTD [µE/(cm2 ·sec)]', 'CHLFLUO_CTD [mg/m3]',
+                          'TURB_CTD [NTU]', 'PHYC_CTD [ppb]']
+    
+        data = rzip.get_data(parameter_list)
+    
+        profile = ctd_profile_plot.ProfilePlot(data, parameters=parameter_list)
+        plot = profile.plot(x='TEMP_CTD [°C (ITS-90)]',
+                            y='PRES_CTD [dbar]',
+                            z='SALT_CTD [psu (PSS-78)]',
+                            name=profile_name)
+
+        html = file_html(plot, CDN, "my plot")
+        return html
+
+    def downloadProfile(self, path_zipfile, profile_name):
+        """ Plots ... """
         rzip = ctd_profile_plot.ReadZipFile(path_zipfile, profile_name)
     
         parameter_list = ['PRES_CTD [dbar]', 'CNDC_CTD [S/m]', 'CNDC2_CTD [S/m]', 'SALT_CTD [psu (PSS-78)]',

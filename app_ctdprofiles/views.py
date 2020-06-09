@@ -37,7 +37,7 @@ def listCtdProfiles(request):
     selected_project = request.GET.get('project', '')
     selected_platform = request.GET.get('platform', '')
     selected_date = request.GET.get('date', '')
-    selected_revision_date_after = request.GET.get('revision_date_after', '')
+#     selected_revision_date_after = request.GET.get('revision_date_after', '')
     selected_latitude_from = request.GET.get('latitude_from', '')
     selected_latitude_to = request.GET.get('latitude_to', '')
     selected_longitude_from = request.GET.get('longitude_from', '')
@@ -73,8 +73,8 @@ def listCtdProfiles(request):
         db_filter_dict['{0}__{1}'.format('longitude', 'lte')] = selected_longitude_to
     if selected_station not in ['', ]:
         db_filter_dict['{0}__{1}'.format('station_name', 'icontains')] = urllib.parse.unquote_plus(selected_station)
-    if selected_revision_date_after not in ['', ]:
-        db_filter_dict['{0}__{1}'.format('revision_date', 'gte')] = urllib.parse.unquote_plus(selected_revision_date_after)
+#     if selected_revision_date_after not in ['', ]:
+#         db_filter_dict['{0}__{1}'.format('revision_date', 'gte')] = urllib.parse.unquote_plus(selected_revision_date_after)
 
 
     #
@@ -165,7 +165,7 @@ def listCtdProfiles(request):
                                'selected_platform' : selected_platform,
                                
                                'selected_date' : selected_date,
-                               'selected_revision_date_after' : selected_revision_date_after,
+#                                'selected_revision_date_after' : selected_revision_date_after,
                                
                                'selected_latitude_from' : selected_latitude_from,
                                'selected_latitude_to' : selected_latitude_to,
@@ -220,4 +220,17 @@ def viewTestPlot(request, profile_name):
 #     ctd = ctdprofiles_core.CtdProfilesCore()
 #     
 #     return HttpResponse(content = ctd.createPlot('aaa', 'bbb'))
+
+def downloadTestPlot(request, profile_name):
+    """ """
+    lat_long_desc_table = []
+    ctdprofiles = models.CtdProfiles.objects.filter(ctd_profile_name = profile_name)
+    for db_row in ctdprofiles: 
+        row = [db_row.latitude, db_row.longitude, db_row.station_name + "\n" + db_row.sample_date]
+        lat_long_desc_table.append(row)
+    
+    ctd = ctdprofiles_core.CtdProfilesCore()
+    
+    return HttpResponse(content = ctd.createMap(lat_long_desc_table))
+
 

@@ -14,4 +14,5 @@ urlpatterns = [
     #
     path('map/<str:profile_name>/', app_ctdprofiles.views.viewTestMap),
     path('plot/<str:profile_name>/', app_ctdprofiles.views.viewTestPlot),
+    path('download/<str:profile_name>/', app_ctdprofiles.views.downloadTestPlot),
 ]
