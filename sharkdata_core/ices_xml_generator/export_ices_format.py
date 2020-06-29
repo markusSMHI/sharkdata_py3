@@ -86,6 +86,12 @@ class IcesXmlGenerator(object):
         for rowdictkey in sorted(self.datarow_dict.keys()):
             rowdict = self.datarow_dict[rowdictkey]
 #             if settings.DEBUG: print('DEBUG: Row as dict: ' + str(rowdict))
+
+
+#             if rowdict.get("SMPNO-R34", "") == "51d548f222eeb16ea91800d8f23ef405":
+#                 print("DEBUG")
+
+
                         
             # ===== Rec 00. =====
             if rec00_element == False:
@@ -209,23 +215,31 @@ class IcesXmlGenerator(object):
                 remove_value = True
                 if settings.DEBUG:
                     print('DEBUG: <REMOVE>' + rowdict.get('scientific_name', ''))
-            # ZP must have both ABUNDNR and WETWT.
-            elif rowdict['DTYPE-R34'] == 'ZP':
-                param = rowdict['PARAM-R38']
-                if param in ['ABUNDNR', 'BMWETWT', ]:
-                    rec38_key = rowdict['rec38_key']
-                    if param == 'ABUNDNR':
-                        new_key = rec38_key.replace('ABUNDNR+nr', 'BMWETWT+g')
-                        if new_key in self._zp_abundnr_wetwt_list:
-                            remove_value = False
-                        else:
-                            remove_value = True
-                    elif param == 'BMWETWT':
-                        new_key = rec38_key.replace('BMWETWT+g', 'ABUNDNR+nr')
-                        if new_key in self._zp_abundnr_wetwt_list:
-                            remove_value = False
-                        else:
-                            remove_value = True
+            
+            
+            
+            
+#             # ZP must have both ABUNDNR and WETWT.
+#             elif rowdict['DTYPE-R34'] == 'ZP':
+#                 param = rowdict['PARAM-R38']
+#                 if param in ['ABUNDNR', 'BMWETWT', ]:
+#                     rec38_key = rowdict['rec38_key']
+#                     if param == 'ABUNDNR':
+#                         new_key = rec38_key.replace('ABUNDNR+nr', 'BMWETWT+g')
+#                         if new_key in self._zp_abundnr_wetwt_list:
+#                             remove_value = False
+#                         else:
+#                             remove_value = True
+#                     elif param == 'BMWETWT':
+#                         new_key = rec38_key.replace('BMWETWT+g', 'ABUNDNR+nr')
+#                         if new_key in self._zp_abundnr_wetwt_list:
+#                             remove_value = False
+#                         else:
+#                             remove_value = True
+            
+            
+            
+            
             #
             if not remove_value:
                 if rec38_lastusedkey != rowdict.get('rec38_key', ''):
