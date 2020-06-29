@@ -97,53 +97,127 @@ if __name__ == "__main__":
  </p>
  <a name="rcode"></a> 
  <pre>
+ 
 # Load required libraries
-library('jsonlite')
-library('httr')
+require(tidyverse)
+require(leaflet)
+
 # Obtain list of all datasets
-datasets<-fromJSON('http://sharkdata.se/datasets/list.json')
-# The dataframe datasets contains lists 
-ls(datasets) # shows the contents
-datasets$dataset_name # this one contains names of datasets
-print('Number of datasets:')
-print(length(datasets$dataset_name))
+datasets = read_delim("http://sharkdata.se/datasets/table.txt", delim = "\t")
+View(datasets) # View the table in RStudio
+colnames(datasets) # shows the contents of the header
+# datasets$`Dataset name` # this list contains names of datasets
+paste("Number of datasets:",length(datasets$`Dataset name`), sep=" ")
 
 # We take a look at one individual dataset
-setname<-datasets$dataset_name[1] # pick the first
-data_sample<-fromJSON(paste('http://sharkdata.se/datasets/',setname,'/data.json',sep=''))
+setname<-datasets$`Dataset name`[1] # select dataset by row index, in this case the first
+data_sample<-read_delim(paste("http://sharkdata.se/datasets/",setname,"/data.txt",sep=""), delim ="\t", guess_max = 2000, col_names = T, locale = readr::locale(encoding = "latin1")) # Note the use of latin1 to accurately read Å, Ä and Ö letters from the Swedish alphabet.
 
-# This list should contain 'header' and 'rows'
+# Check data
+View(data_sample)
+str(data_sample)
+dim(data_sample)
 
-# now we create a slice of data to look at
-col_index<-which(data_sample$header == 'parameter') # column listing availible parameters
-parameter_list<-unique(data_sample$rows[,col_index]) # create a list of these
-row_index<-which(data_sample$rows[,col_index] == parameter_list[1]) # pick the first param. in list
-data_slice<-data_sample$rows[row_index,]  # read out all corresponding rows
+# Now we create a slice of data to look at
+parameter_list = unique(data_sample$parameter) # create a list of these
+data_slice = data_sample[which(data_sample$parameter == parameter_list[1]),]  # pick the first param. in list and read out all corresponding rows
+
+# Check data
+View(data_slice)
+str(data_slice)
+dim(data_slice)
 
 # make sure the parameter have the same unit
-col_index<-which(data_sample$header == 'unit') # column listing availible units
-unit_list<-unique(data_slice[,col_index])  # list all units in the slice
-if(length(unit_list) > 1){  # if we have more than one unit in the list
-  index<-which(data_slice[,col_index] == unit_list[1]) # pick first one from unit list
-  data_slice<-data_slice[index,] # only keep these
-}
-col_index<-which(data_sample$header == 'value') # index column with the numbers
-# read out all values and convert to numbers (character by default)
-samp_values<-as.numeric(data_slice[,col_index])
-# .. and e.g. plot them as a histogram and boxplot
-par(mfcol=c(1,2))
-hist(samp_values, xlab=unit_list[1])
-boxplot(samp_values, ylab=unit_list[1])
-mean(samp_values)
+unit_list = unique(data_sample$unit) # column listing availible units
+data_slice = data_slice[which(data_slice$unit == unit_list[1]),] # pick first one from unit list
+data_values<-data_slice$value # read values from data_slice
 
+# Check data values
+mean(data_values)
+quantile(data_values)
+
+# .. and e.g. plot them as a histogram and boxplot
+ggplot(data_slice,aes(y = , x = value)) +
+  geom_histogram(fill = "black") +
+  xlab(unit_list[1]) +
+  theme_bw()
+
+ggplot(data_slice, aes(y = value, x =)) +
+  geom_boxplot(fill = "black")+
+  xlab(unit_list[1]) +
+  theme_bw()
+
+# plot data
+```{r plotdata}
+ggplot(data_slice,aes(x = sample_date, y = value, colour = station_name)) +
+  geom_point() +
+  ylab(unit_list[1]) +
+  xlab("Date") +
+  theme_bw()
+
+# plot interactive leaflet map
+# Create a color palette with handmade bins. Below is specially made for Bacterial abundance with values of billion cells/L
+max(data_slice$value/1000000000)
+mybins <- seq(0, 5, by=0.5)
+mypalette <- colorBin(palette="YlOrBr", domain=data_slice$value/1000000000, na.color="transparent", bins=mybins)
+
+# Prepare the text for the tooltip:
+mytext <- paste(
+   "Sample Min Depth: ", data_slice$sample_min_depth_m, "<br/>",
+   "Sample Max Depth: ", data_slice$sample_max_depth_m, "<br/>",
+   "Stations: ", data_slice$station_name, "<br/>", 
+   "Abundance: ", data_slice$value/1000000000, sep="") %>%
+  lapply(htmltools::HTML)
+
+# Final Map
+m <- leaflet(data_slice) %>% 
+  addTiles()  %>% 
+  setView( lat=60, lng=15, zoom=4) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addCircleMarkers(~sample_longitude_dd, ~sample_latitude_dd, 
+    fillColor = ~mypalette(data_slice$value/1000000000), fillOpacity = 0.7, color="white", radius=sqrt((data_slice$value/10000000)/pi )
+, stroke=FALSE,
+    label = mytext,
+    labelOptions = labelOptions( style = list("font-weight" = "normal", padding = "3px 8px"), textsize = "13px", direction = "auto")
+  ) %>%
+  addLegend(pal=mypalette, values=~data_slice$value/1000000000, opacity=0.9, title = "Bacterial Abundance (cells/L x 10^6", position = "bottomright" )
+
+m 
+
+# save the widget in a html file if needed.
+# library(htmlwidgets)
+# saveWidget(m, file=paste0( getwd(), "/HtmlWidget/bubblemapSHARKdata_dataset.html"))
+
+## Below R code for obtaining species data from species lists is under development
 
 # list all taxa
-taxa<-fromJSON('http://sharkdata.se/speciesobs/table.json')
-index<-which(taxa$header == 'scientificName')
-taxa_list<-unique(taxa$rows[,index])
+taxa = read_delim("http://sharkdata.se/speciesobs/table.txt/", delim = "\t")
+taxa_list = unique(taxa$scientificName)
+paste("Number of taxa:",length(taxa_list), sep = "")
 
-print('Number of taxa:')
-print(length(taxa_list))
+# We take a look at one individual species for one year
+SPECIES = "Pseudo-nitzschia delicatissima" # Select Pseudo-nitzschia delicatissima
+YEAR = 2019
+
+taxa = read_delim(paste("http://sharkdata.se/speciesobs/table.txt/?species=", SPECIES, sep=""), delim = "\t") %>% 
+  select(DataType, year, month, day, scientificName, decimalLatitude, decimalLongitude, DatasetName) %>% 
+  group_by(scientificName) %>% 
+  filter(year == YEAR)
+
+# plot interactive leaflet map
+
+m <- leaflet(taxa) %>% 
+  addTiles()  %>% 
+  setView(lat=60, lng=15, zoom=4) %>%
+  addProviderTiles("Esri.WorldImagery") %>%
+  addCircleMarkers(~decimalLongitude, ~decimalLatitude, stroke=FALSE) %>%
+  
+m 
+
+# save the widget in a html file if needed.
+# library(htmlwidgets)
+# saveWidget(m, file=paste0( getwd(), "/HtmlWidget/bubblemapSHARKdata_species.html"))
+
  </pre>
 	
 
